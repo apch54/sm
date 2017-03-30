@@ -12,11 +12,11 @@ class Phacker.Game.Platform
         @gm.parameters.scl = {}
         @pm = @gm.parameters.pfm
         @pm =
-            x0: 20
+            x0: 0
             y0: if @gm.gameOptions.fullscreen  then 470 else 410
-            w: 128
+            w: 123
             last_x: 0 # x of last platform
-            n : 7 # platform nb
+            n : if @gm.gameOptions.fullscreen  then 5 else 8
 
         @pfm = @gm.add.physicsGroup() # waterlily
         #@pfm.enableBody = true
@@ -29,7 +29,8 @@ class Phacker.Game.Platform
     init_pfm:->
 
         @make_one_pfm(@pm.x0)
-        for i in [1, @pm.n - 1] #  n >= 2
+        for i in [1..@pm.n - 1] #  n >= 2
+            console.log "- #{@_fle_} : ",i
             @make_one_pfm(@pm.last_x + @pm.w)
 
 
@@ -37,6 +38,6 @@ class Phacker.Game.Platform
 
         p =   @pfm.create x, @pm.y0, "platform"
         @pm.last_x = p.x
-        console.log "- #{@_fle_} : ",@pm.last_x
+        #console.log "- #{@_fle_} : ",@pm.last_x
         p.body.immovable = true
 

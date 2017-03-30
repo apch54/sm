@@ -62,23 +62,22 @@
       this.gm.parameters.scl = {};
       this.pm = this.gm.parameters.pfm;
       this.pm = {
-        x0: 20,
+        x0: 0,
         y0: this.gm.gameOptions.fullscreen ? 470 : 410,
-        w: 128,
+        w: 123,
         last_x: 0,
-        n: 7
+        n: this.gm.gameOptions.fullscreen ? 5 : 8
       };
       this.pfm = this.gm.add.physicsGroup();
       this.init_pfm();
     }
 
     Platform.prototype.init_pfm = function() {
-      var i, j, len, ref, results;
+      var i, j, ref, results;
       this.make_one_pfm(this.pm.x0);
-      ref = [1, this.pm.n - 1];
       results = [];
-      for (j = 0, len = ref.length; j < len; j++) {
-        i = ref[j];
+      for (i = j = 1, ref = this.pm.n - 1; 1 <= ref ? j <= ref : j >= ref; i = 1 <= ref ? ++j : --j) {
+        console.log("- " + this._fle_ + " : ", i);
         results.push(this.make_one_pfm(this.pm.last_x + this.pm.w));
       }
       return results;
@@ -88,7 +87,6 @@
       var p;
       p = this.pfm.create(x, this.pm.y0, "platform");
       this.pm.last_x = p.x;
-      console.log("- " + this._fle_ + " : ", this.pm.last_x);
       return p.body.immovable = true;
     };
 
