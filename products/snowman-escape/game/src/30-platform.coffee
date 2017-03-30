@@ -1,13 +1,10 @@
 ###
-  ----------.----------
-      ecrit par fc
-      le  2017-03-30
-  ----------.----------
+      ecrit par fc   le  2017-03-30
 ###
 
 class Phacker.Game.Platform
 
-    constructor: (@gm) ->
+    constructor: (@gm, @dgrO) ->
         @_fle_ = 'Platform'
         @gm.parameters.scl = {}
         @pm = @gm.parameters.pfm
@@ -15,8 +12,10 @@ class Phacker.Game.Platform
             x0: 0
             y0: if @gm.gameOptions.fullscreen  then 460 else 400
             w: 123
+            h: 34
+            dy_danger : 29 # dy to draw dangers
             last_x: 0 # x of last platform
-            n : if @gm.gameOptions.fullscreen  then 5 else 8
+            n : if @gm.gameOptions.fullscreen  then 6 else 8
 
         @pfm = @gm.add.physicsGroup() # waterlily
         #@pfm.enableBody = true
@@ -26,18 +25,23 @@ class Phacker.Game.Platform
     #.----------.----------
     # make platforms
     #.----------.----------
+
     init_pfm:->
 
-        @make_one_pfm(@pm.x0)
+        @make_one_pfm(@pm.x0, @pm.y0, 0)
         for i in [1..@pm.n - 1] #  n >= 2
-            console.log "- #{@_fle_} : ",i
-            @make_one_pfm(@pm.last_x + @pm.w)
+
+            if i in [2, 5] then nd = 1 else nd = 0 # danger nb
+            @make_one_pfm(@pm.last_x + @pm.w, @pm.y0, nd)
 
 
-    make_one_pfm: (x) ->
+    make_one_pfm: (x,y,nd) -> # nd stans for danger nb
 
-        p =   @pfm.create x, @pm.y0, "platform"
+        @dgrO.make_danger(x, y - @pm.dy_danger, nd)
+
+        p =   @pfm.create x, y, "platform"
         @pm.last_x = p.x
-        #console.log "- #{@_fle_} : ",@pm.last_x
         p.body.immovable = true
+
+
 

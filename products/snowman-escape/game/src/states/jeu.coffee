@@ -13,8 +13,10 @@ class @YourGame extends Phacker.GameState
 		@game.world.setBounds(-1000, -1000, 300000,  2000) # offset x, offset y, w, h
 
 		@bgO = new Phacker.Game.Back_ground @game
+		@dangerO = new Phacker.Game.Danger @game
+		@platformO = new Phacker.Game.Platform @game , @dangerO
 
-		@platformO = new Phacker.Game.Platform @game
+
 
 		##### LOGIC OF YOUR GAME #####
 		# Examples buttons actions
