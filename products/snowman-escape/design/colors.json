@@ -1,0 +1,45 @@
+{
+    "menuitem_border_color": "white",
+    "menuitem_text_color": "black",
+    "menuitem_gradiant_start": "#027ddd",
+    "menuitem_gradiant_end": "#027ddd",
+    
+    "menuitem_click_border_color": "white",
+    "menuitem_click_text_color": "#white",
+    "menuitem_click_gradiant_start": "#01477d",
+    "menuitem_click_gradiant_end": "#01477d",
+    
+    
+	"text_block_gradiant_start": "#ddf2fc",
+	"text_block_gradiant_end": "#89d5fd",
+	"text_block_color": "black",
+	       
+	
+	"ads": "#d2e9f9",
+	
+	
+    "play_btn_border_color": "#0351c7",
+    "play_btn_gradiant_start": "#001b6d",
+    "play_btn_gradiant_end": "#0477ed",
+    
+    "play_click_btn_border_color": "#750d10",
+    "play_click_btn_gradiant_start": "#750d10",
+    "play_click_btn_gradiant_end": "#f50103",
+    
+    
+    "sliderfs_gradiant_start": "#0066ff",
+    "sliderfs_gradiant_end": "#003366",
+    
+    
+    "autopromo_playnow": "#51626f",
+
+    "text_color_gameover": "white",
+    "text_color_win": "white",
+    "text_color_statusbar": "white",
+    "text_color_onetwothree_loading": "#00034c",
+    "text_color_onetwothree_intro": "#00034c",
+    "color_loader": "#0045f3",
+    "color_timer": "#568805",
+    "color_timer_bg": "#ffffff"
+
+}
