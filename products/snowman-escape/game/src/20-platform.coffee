@@ -12,16 +12,31 @@ class Phacker.Game.Platform
         @gm.parameters.scl = {}
         @pm = @gm.parameters.pfm
         @pm =
-            x0: 0
+            x0: 20
             y0: if @gm.gameOptions.fullscreen  then 470 else 410
-            last_x: 0
+            w: 128
+            last_x: 0 # x of last platform
+            n : 7 # platform nb
 
         @pfm = @gm.add.physicsGroup() # waterlily
         #@pfm.enableBody = true
 
-        @make_one_pfm()
+        @init_pfm()
 
-    make_one_pfm: ->
-        p =   @pfm.create @pm.x0, @pm.y0, "platform"
+    #.----------.----------
+    # make platforms
+    #.----------.----------
+    init_pfm:->
+
+        @make_one_pfm(@pm.x0)
+        for i in [1, @pm.n - 1] #  n >= 2
+            @make_one_pfm(@pm.last_x + @pm.w)
+
+
+    make_one_pfm: (x) ->
+
+        p =   @pfm.create x, @pm.y0, "platform"
+        @pm.last_x = p.x
+        console.log "- #{@_fle_} : ",@pm.last_x
         p.body.immovable = true
 

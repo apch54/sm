@@ -44,7 +44,7 @@ class Phacker.Game.Back_ground
       x3 = @bg2.x + @pm.bg.w
       @bg3 = @gm.add.sprite x3, @pm.bg.y0, 'bg_gameplay' # 768x500
       @bgs.push @bg3
-      console.log "- #{@_fle_} : ",@bgs[0].x,  @bgs[1].x, @bgs[2].x
+      #console.log "- #{@_fle_} : ",@bgs[0].x,  @bgs[1].x, @bgs[2].x
       #@bg.fixedToCamera = true
 
 

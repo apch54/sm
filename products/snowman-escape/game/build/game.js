@@ -37,8 +37,7 @@
       this.bgs.push(this.bg2);
       x3 = this.bg2.x + this.pm.bg.w;
       this.bg3 = this.gm.add.sprite(x3, this.pm.bg.y0, 'bg_gameplay');
-      this.bgs.push(this.bg3);
-      return console.log("- " + this._fle_ + " : ", this.bgs[0].x, this.bgs[1].x, this.bgs[2].x);
+      return this.bgs.push(this.bg3);
     };
 
     return Back_ground;
@@ -63,17 +62,33 @@
       this.gm.parameters.scl = {};
       this.pm = this.gm.parameters.pfm;
       this.pm = {
-        x0: 0,
+        x0: 20,
         y0: this.gm.gameOptions.fullscreen ? 470 : 410,
-        last_x: 0
+        w: 128,
+        last_x: 0,
+        n: 7
       };
       this.pfm = this.gm.add.physicsGroup();
-      this.make_one_pfm();
+      this.init_pfm();
     }
 
-    Platform.prototype.make_one_pfm = function() {
+    Platform.prototype.init_pfm = function() {
+      var i, j, len, ref, results;
+      this.make_one_pfm(this.pm.x0);
+      ref = [1, this.pm.n - 1];
+      results = [];
+      for (j = 0, len = ref.length; j < len; j++) {
+        i = ref[j];
+        results.push(this.make_one_pfm(this.pm.last_x + this.pm.w));
+      }
+      return results;
+    };
+
+    Platform.prototype.make_one_pfm = function(x) {
       var p;
-      p = this.pfm.create(this.pm.x0, this.pm.y0, "platform");
+      p = this.pfm.create(x, this.pm.y0, "platform");
+      this.pm.last_x = p.x;
+      console.log("- " + this._fle_ + " : ", this.pm.last_x);
       return p.body.immovable = true;
     };
 
