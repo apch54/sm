@@ -24,8 +24,15 @@
         h: 500,
         middleX: this.gm.gameOptions.fullscreen ? 187 : 384
       };
+      this.pm.btn = {
+        w: 200,
+        h: 55,
+        y0: this.gm.gameOptions.fullscreen ? this.pm.gm.h + 5 : this.pm.gm.h - 12
+      };
+      this.pm.btn.x0 = this.pm.bg.middleX - this.pm.btn.w / 2;
       this.bgs = [];
       this.draw_bgs();
+      this.draw_btn();
     }
 
     Back_ground.prototype.draw_bgs = function() {
@@ -38,6 +45,15 @@
       x3 = this.bg2.x + this.pm.bg.w;
       this.bg3 = this.gm.add.sprite(x3, this.pm.bg.y0, 'bg_gameplay');
       return this.bgs.push(this.bg3);
+    };
+
+    Back_ground.prototype.draw_btn = function() {
+      this.btn = this.gm.add.button(this.pm.btn.x0, this.pm.btn.y0, 'jump_btn', this.on_tap, this, 1, 1, 0);
+      return this.btn.fixedToCamera = true;
+    };
+
+    Back_ground.prototype.on_tap = function() {
+      return console.log("- " + this._fle_ + " : ", '--- im in on tap ---');
     };
 
     return Back_ground;
@@ -63,7 +79,7 @@
       this.pm = this.gm.parameters.pfm;
       this.pm = {
         x0: 0,
-        y0: this.gm.gameOptions.fullscreen ? 470 : 410,
+        y0: this.gm.gameOptions.fullscreen ? 460 : 400,
         w: 123,
         last_x: 0,
         n: this.gm.gameOptions.fullscreen ? 5 : 8

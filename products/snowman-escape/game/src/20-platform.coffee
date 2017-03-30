@@ -13,7 +13,7 @@ class Phacker.Game.Platform
         @pm = @gm.parameters.pfm
         @pm =
             x0: 0
-            y0: if @gm.gameOptions.fullscreen  then 470 else 410
+            y0: if @gm.gameOptions.fullscreen  then 460 else 400
             w: 123
             last_x: 0 # x of last platform
             n : if @gm.gameOptions.fullscreen  then 5 else 8
