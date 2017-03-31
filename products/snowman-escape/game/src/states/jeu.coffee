@@ -3,7 +3,7 @@ class @YourGame extends Phacker.GameState
 	update: ->
 			super() #Required
 
-			@spriteO.collide()
+			@spriteO.collide_with_pfm()
 
 
 	resetPlayer: ->

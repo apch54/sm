@@ -177,27 +177,30 @@
         y0: this.gm.gameOptions.fullscreen ? 200 : 390,
         w: 98,
         h: 105,
-        message: "nothing yet"
+        message: "nothing yet",
+        has_collided: false
       };
-      this.spt = this.gm.add.sprite(100, 200, 'character_sprite', 0);
+      this.spt = this.gm.add.sprite(100, 200, 'character_sprite');
       this.gm.physics.arcade.enable(this.spt, Phaser.Physics.ARCADE);
       this.spt.body.setSize(42, 102, 38, 3);
+      this.anim_spt = this.spt.animations.add('jmp', [0, 1, 2, 1, 3], 8, true);
+      this.spt.animations.play('jmp');
       this.spt.body.gravity.y = 200;
     }
 
-    Sprite.prototype.collide = function() {
+    Sprite.prototype.collide_with_pfm = function() {
       if (this.gm.physics.arcade.collide(this.spt, this.pfmO.pfm, function() {
         return true;
       }, function(spt, pfm) {
-        return this.when_collide(spt, pfm);
+        return this.when_collide_with_pfm(spt, pfm);
       }, this)) {
         return this.pm.message;
       }
       return 'nothing';
     };
 
-    Sprite.prototype.when_collide = function(spt, pfm) {
-      return console.log("- " + this._fle_ + " : ", 'i\'m in when collide');
+    Sprite.prototype.when_collide_with_pfm = function(spt, pfm) {
+      return console.log("- " + this._fle_ + " :", pfm.key);
     };
 
     return Sprite;
@@ -219,7 +222,7 @@
 
     YourGame.prototype.update = function() {
       YourGame.__super__.update.call(this);
-      return this.spriteO.collide();
+      return this.spriteO.collide_with_pfm();
     };
 
     YourGame.prototype.resetPlayer = function() {
