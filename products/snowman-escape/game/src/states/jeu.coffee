@@ -18,7 +18,10 @@ class @YourGame extends Phacker.GameState
 			@bgO = new Phacker.Game.Back_ground @game
 			@dangerO = new Phacker.Game.Danger @game
 			@platformO = new Phacker.Game.Platform @game , @dangerO
+
 			@spriteO = new Phacker.Game.Sprite @game , @dangerO, @platformO
+			@bgO.bind @spriteO, @platformO
+
 
 
 

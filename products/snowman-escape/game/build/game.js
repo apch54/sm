@@ -57,7 +57,14 @@
     };
 
     Back_ground.prototype.on_tap = function() {
+      this.sptO.spt.body.velocity.y += 500;
       return console.log("- " + this._fle_ + " : ", '--- im in on tap ---');
+    };
+
+    Back_ground.prototype.bind = function(sptO, pfmO) {
+      this.sptO = sptO;
+      this.pfmO = pfmO;
+      return console.log("- " + this._fle_ + " : ", sptO, pfmO);
     };
 
     return Back_ground;
@@ -173,35 +180,40 @@
       this._fle_ = 'Sprite';
       this.pm = this.gm.parameters.spt = {};
       this.pm = {
-        x0: 200,
-        y0: this.gm.gameOptions.fullscreen ? 200 : 390,
+        x0: 50,
+        y0: this.pfmO.pm.y0 - 200,
+        alt_max: 200,
         w: 98,
         h: 105,
+        vy: 400,
+        g: 500,
         message: "nothing yet",
         has_collided: false
       };
-      this.spt = this.gm.add.sprite(100, 200, 'character_sprite');
+      this.spt = this.gm.add.sprite(this.pm.x0, this.pm.y0, 'character_sprite');
       this.gm.physics.arcade.enable(this.spt, Phaser.Physics.ARCADE);
       this.spt.body.setSize(42, 102, 38, 3);
-      this.anim_spt = this.spt.animations.add('jmp', [0, 1, 2, 1, 3], 8, true);
-      this.spt.animations.play('jmp');
-      this.spt.body.gravity.y = 200;
+      this.spt.body.bounce.y = 1.2;
+      this.anim_spt = this.spt.animations.add('jmp', [0, 1, 2, 1, 3], 8, false);
+      this.spt.body.gravity.y = this.pm.g;
     }
 
     Sprite.prototype.collide_with_pfm = function() {
+      if ((this.pfmO.pm.y0 - this.spt.y) > this.pm.alt_max) {
+        this.spt.body.velocity.y = 10;
+        this.spt.y += 5;
+      }
       if (this.gm.physics.arcade.collide(this.spt, this.pfmO.pfm, function() {
         return true;
       }, function(spt, pfm) {
-        return this.when_collide_with_pfm(spt, pfm);
+        return this.spt.animations.play('jmp');
       }, this)) {
         return this.pm.message;
       }
       return 'nothing';
     };
 
-    Sprite.prototype.when_collide_with_pfm = function(spt, pfm) {
-      return console.log("- " + this._fle_ + " :", pfm.key);
-    };
+    Sprite.prototype.when_collide_with_pfm = function(spt, pfm) {};
 
     return Sprite;
 
@@ -238,6 +250,7 @@
       this.dangerO = new Phacker.Game.Danger(this.game);
       this.platformO = new Phacker.Game.Platform(this.game, this.dangerO);
       this.spriteO = new Phacker.Game.Sprite(this.game, this.dangerO, this.platformO);
+      this.bgO.bind(this.spriteO, this.platformO);
       lostBtn = this.game.add.text(0, 0, "Bad Action");
       lostBtn.inputEnabled = true;
       lostBtn.y = this.game.height * 0.5 - lostBtn.height * 0.5;
