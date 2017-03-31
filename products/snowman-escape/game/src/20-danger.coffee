@@ -13,10 +13,11 @@ class Phacker.Game.Danger
             h: 38
             proba : 50 # 50%
             n: 1 # nuber max of danger on each platform
+            dy: 24  # relative danger obj location against platform
+            dx: 10
 
         @dgr = @gm.add.physicsGroup() # make ganger group
         @dgr.enableBody = true
-        #console.log "- #{@_fle_} : ",@pm.proba, @gm.parameters
 
     #.----------.----------
     # make danger : pine trees
@@ -26,9 +27,9 @@ class Phacker.Game.Danger
 
          i = 0
          while nd > i++
-            console.log "- #{@_fle_} : ",i,nd
             d = @dgr.create x, y, "danger"
             d.body.immovable = true
+            x += @pm.w
 
          @gm.world.bringToTop @dgr
 

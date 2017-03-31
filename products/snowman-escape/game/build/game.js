@@ -22,12 +22,13 @@
         y0: 48,
         w: 768,
         h: 500,
+        scaleY: this.gm.gameOptions.fullscreen ? 1 : .85,
         middleX: this.gm.gameOptions.fullscreen ? 187 : 384
       };
       this.pm.btn = {
         w: 200,
         h: 55,
-        y0: this.gm.gameOptions.fullscreen ? this.pm.gm.h + 5 : this.pm.gm.h - 12
+        y0: this.gm.gameOptions.fullscreen ? this.pm.gm.h + 5 : this.pm.gm.h - 18
       };
       this.pm.btn.x0 = this.pm.bg.middleX - this.pm.btn.w / 2;
       this.bgs = [];
@@ -38,12 +39,15 @@
     Back_ground.prototype.draw_bgs = function() {
       var x2, x3;
       this.bg1 = this.gm.add.sprite(this.pm.bg.x0, this.pm.bg.y0, 'bg_gameplay');
+      this.bg1.scale.setTo(1, this.pm.bg.scaleY);
       this.bgs.push(this.bg1);
       x2 = this.bg1.x + this.pm.bg.w;
       this.bg2 = this.gm.add.sprite(x2, this.pm.bg.y0, 'bg_gameplay');
+      this.bg2.scale.setTo(1, this.pm.bg.scaleY);
       this.bgs.push(this.bg2);
       x3 = this.bg2.x + this.pm.bg.w;
       this.bg3 = this.gm.add.sprite(x3, this.pm.bg.y0, 'bg_gameplay');
+      this.bg3.scale.setTo(1, this.pm.bg.scaleY);
       return this.bgs.push(this.bg3);
     };
 
@@ -77,7 +81,9 @@
         w: 34,
         h: 38,
         proba: 50,
-        n: 1
+        n: 1,
+        dy: 24,
+        dx: 10
       };
       this.dgr = this.gm.add.physicsGroup();
       this.dgr.enableBody = true;
@@ -87,9 +93,9 @@
       var d, i;
       i = 0;
       while (nd > i++) {
-        console.log("- " + this._fle_ + " : ", i, nd);
         d = this.dgr.create(x, y, "danger");
         d.body.immovable = true;
+        x += this.pm.w;
       }
       return this.gm.world.bringToTop(this.dgr);
     };
@@ -111,14 +117,12 @@
       this.gm = gm;
       this.dgrO = dgrO;
       this._fle_ = 'Platform';
-      this.gm.parameters.scl = {};
-      this.pm = this.gm.parameters.pfm;
+      this.pm = this.gm.parameters.pfm = {};
       this.pm = {
         x0: 0,
-        y0: this.gm.gameOptions.fullscreen ? 460 : 400,
+        y0: this.gm.gameOptions.fullscreen ? 460 : 390,
         w: 123,
         h: 34,
-        dy_danger: 29,
         last_x: 0,
         n: this.gm.gameOptions.fullscreen ? 6 : 8
       };
@@ -143,13 +147,60 @@
 
     Platform.prototype.make_one_pfm = function(x, y, nd) {
       var p;
-      this.dgrO.make_danger(x, y - this.pm.dy_danger, nd);
+      this.dgrO.make_danger(x + this.dgrO.pm.dx, y - this.dgrO.pm.dy, nd);
       p = this.pfm.create(x, y, "platform");
       this.pm.last_x = p.x;
       return p.body.immovable = true;
     };
 
     return Platform;
+
+  })();
+
+}).call(this);
+
+
+/*
+  written by fc on 2017-03-31
+ */
+
+(function() {
+  Phacker.Game.Sprite = (function() {
+    function Sprite(gm, dgrO, pfmO) {
+      this.gm = gm;
+      this.dgrO = dgrO;
+      this.pfmO = pfmO;
+      this._fle_ = 'Sprite';
+      this.pm = this.gm.parameters.spt = {};
+      this.pm = {
+        x0: 200,
+        y0: this.gm.gameOptions.fullscreen ? 200 : 390,
+        w: 98,
+        h: 105,
+        message: "nothing yet"
+      };
+      this.spt = this.gm.add.sprite(100, 200, 'character_sprite', 0);
+      this.gm.physics.arcade.enable(this.spt, Phaser.Physics.ARCADE);
+      this.spt.body.setSize(42, 102, 38, 3);
+      this.spt.body.gravity.y = 200;
+    }
+
+    Sprite.prototype.collide = function() {
+      if (this.gm.physics.arcade.collide(this.spt, this.pfmO.pfm, function() {
+        return true;
+      }, function(spt, pfm) {
+        return this.when_collide(spt, pfm);
+      }, this)) {
+        return this.pm.message;
+      }
+      return 'nothing';
+    };
+
+    Sprite.prototype.when_collide = function(spt, pfm) {
+      return console.log("- " + this._fle_ + " : ", 'i\'m in when collide');
+    };
+
+    return Sprite;
 
   })();
 
@@ -167,7 +218,8 @@
     }
 
     YourGame.prototype.update = function() {
-      return YourGame.__super__.update.call(this);
+      YourGame.__super__.update.call(this);
+      return this.spriteO.collide();
     };
 
     YourGame.prototype.resetPlayer = function() {
@@ -182,6 +234,7 @@
       this.bgO = new Phacker.Game.Back_ground(this.game);
       this.dangerO = new Phacker.Game.Danger(this.game);
       this.platformO = new Phacker.Game.Platform(this.game, this.dangerO);
+      this.spriteO = new Phacker.Game.Sprite(this.game, this.dangerO, this.platformO);
       lostBtn = this.game.add.text(0, 0, "Bad Action");
       lostBtn.inputEnabled = true;
       lostBtn.y = this.game.height * 0.5 - lostBtn.height * 0.5;

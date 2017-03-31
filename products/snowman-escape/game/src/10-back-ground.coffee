@@ -22,12 +22,13 @@ class Phacker.Game.Back_ground
               y0: 48
               w: 768
               h: 500
+              scaleY: if @gm.gameOptions.fullscreen  then 1 else .85
               middleX: if @gm.gameOptions.fullscreen  then 187 else 384
 
           @pm.btn = # global parameters for jump button
               w: 200
               h: 55
-              y0: if @gm.gameOptions.fullscreen then @pm.gm.h + 5  else @pm.gm.h - 12
+              y0: if @gm.gameOptions.fullscreen then @pm.gm.h + 5  else @pm.gm.h - 18
           @pm.btn.x0 = @pm.bg.middleX - @pm.btn.w / 2
 
           @bgs = [] # store backgrounds
@@ -40,16 +41,18 @@ class Phacker.Game.Back_ground
       #.----------.----------
 
       draw_bgs: ->
-
           @bg1 = @gm.add.sprite @pm.bg.x0, @pm.bg.y0, 'bg_gameplay' # 768x500
+          @bg1.scale.setTo(1, @pm.bg.scaleY)
           @bgs.push @bg1
 
           x2 = @bg1.x + @pm.bg.w
           @bg2 = @gm.add.sprite x2, @pm.bg.y0, 'bg_gameplay' # 768x500
+          @bg2.scale.setTo(1, @pm.bg.scaleY)
           @bgs.push @bg2
 
           x3 = @bg2.x + @pm.bg.w
           @bg3 = @gm.add.sprite x3, @pm.bg.y0, 'bg_gameplay' # 768x500
+          @bg3.scale.setTo(1, @pm.bg.scaleY)
           @bgs.push @bg3
           #console.log "- #{@_fle_} : ",@bgs[0].x,  @bgs[1].x, @bgs[2].x
           #@bg.fixedToCamera = true
