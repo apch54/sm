@@ -1,6 +1,4 @@
-###
-      ecrit par fc   le  2017-03-30
-###
+###     ecrit par fc   le  2017-03-30   ###
 
 class Phacker.Game.Platform
 

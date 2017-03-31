@@ -1,3 +1,13 @@
+### written by fc on 2017-04-01 ###
+
+#             ___
+#           _[___]_  _       |---------------|
+#            ( " )  [_]   << | hi every body |
+#        '--(`~:~`)--|'      |---------------|
+#          / `-:-' \ |
+#     __.--\   :   /--.
+
+
 class @YourGame extends Phacker.GameState
 
 	update: ->

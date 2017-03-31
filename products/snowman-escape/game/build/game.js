@@ -1,10 +1,5 @@
 
-/*
-  ----------.----------
-      ecrit par fc
-      le  2017-03-29
-  ----------.----------
- */
+/*    ecrit par fc le  2017-03-29 */
 
 (function() {
   Phacker.Game.Back_ground = (function() {
@@ -57,14 +52,13 @@
     };
 
     Back_ground.prototype.on_tap = function() {
-      this.sptO.spt.body.velocity.y += 500;
+      this.sptO.spt.body.velocity.y += this.sptO.pm.dvy;
       return console.log("- " + this._fle_ + " : ", '--- im in on tap ---');
     };
 
     Back_ground.prototype.bind = function(sptO, pfmO) {
       this.sptO = sptO;
-      this.pfmO = pfmO;
-      return console.log("- " + this._fle_ + " : ", sptO, pfmO);
+      return this.pfmO = pfmO;
     };
 
     return Back_ground;
@@ -74,9 +68,7 @@
 }).call(this);
 
 
-/*
-  written by fc   on 2017 - 03 - 30
- */
+/*   written by fc   on 2017 - 03 - 30 */
 
 (function() {
   Phacker.Game.Danger = (function() {
@@ -114,9 +106,7 @@
 }).call(this);
 
 
-/*
-      ecrit par fc   le  2017-03-30
- */
+/*     ecrit par fc   le  2017-03-30 */
 
 (function() {
   Phacker.Game.Platform = (function() {
@@ -167,9 +157,7 @@
 }).call(this);
 
 
-/*
-  written by fc on 2017-03-31
- */
+/*  written by fc on 2017-03-31 */
 
 (function() {
   Phacker.Game.Sprite = (function() {
@@ -185,7 +173,7 @@
         alt_max: 200,
         w: 98,
         h: 105,
-        vy: 400,
+        dvy: 500,
         g: 500,
         message: "nothing yet",
         has_collided: false
@@ -220,6 +208,9 @@
   })();
 
 }).call(this);
+
+
+/* written by fc on 2017-04-01 */
 
 (function() {
   var extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },

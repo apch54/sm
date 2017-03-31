@@ -1,9 +1,4 @@
-###
-  ----------.----------
-      ecrit par fc
-      le  2017-03-29
-  ----------.----------
-###
+###    ecrit par fc le  2017-03-29    ###
 
 
 class Phacker.Game.Back_ground
@@ -66,15 +61,18 @@ class Phacker.Game.Back_ground
         @btn.fixedToCamera = true
 
     on_tap:() ->
-        @sptO.spt.body.velocity.y += 500
+
+        @sptO.spt.body.velocity.y += @sptO.pm.dvy
         console.log "- #{@_fle_} : ", '--- im in on tap ---'
+
     #.----------.----------
     # bind to sprite and plateform
     #.----------.----------
     bind:(sptO, pfmO) ->
+
         @sptO = sptO
         @pfmO = pfmO
-        console.log "- #{@_fle_} : ",sptO, pfmO
+        #console.log "- #{@_fle_} : ",sptO, pfmO
 
 
 

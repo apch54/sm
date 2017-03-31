@@ -1,6 +1,4 @@
-###
-  written by fc on 2017-03-31
-###
+###  written by fc on 2017-03-31  ###
 class Phacker.Game.Sprite
 
     constructor: (@gm, @dgrO, @pfmO) ->
@@ -13,7 +11,7 @@ class Phacker.Game.Sprite
             alt_max: 200 # max altitude sprite can reach
             w: 98  # width of the sprite
             h: 105 # height of the sprite
-            vy: 400 # vy when clicking on jump button
+            dvy: 500 # variation of vy when clicking on jump button
             g : 500
             message: "nothing yet" # collide message
             has_collided : false

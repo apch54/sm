@@ -1,6 +1,4 @@
-###
-  written by fc   on 2017 - 03 - 30
-###
+###   written by fc   on 2017 - 03 - 30 ###
 
 class Phacker.Game.Danger
 
