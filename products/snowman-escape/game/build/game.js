@@ -52,8 +52,7 @@
     };
 
     Back_ground.prototype.on_tap = function() {
-      this.sptO.spt.body.velocity.y += this.sptO.pm.dvy;
-      return console.log("- " + this._fle_ + " : ", '--- im in on tap ---');
+      return this.sptO.spt.body.velocity.y += this.sptO.pm.dvy;
     };
 
     Back_ground.prototype.bind = function(sptO, pfmO) {
@@ -173,6 +172,7 @@
         alt_max: 200,
         w: 98,
         h: 105,
+        vx0: 100,
         dvy: 500,
         g: 500,
         message: "nothing yet",
@@ -182,8 +182,9 @@
       this.gm.physics.arcade.enable(this.spt, Phaser.Physics.ARCADE);
       this.spt.body.setSize(42, 102, 38, 3);
       this.spt.body.bounce.y = 1.2;
-      this.anim_spt = this.spt.animations.add('jmp', [0, 1, 2, 1, 3], 8, false);
       this.spt.body.gravity.y = this.pm.g;
+      this.spt.body.velocity.x = this.pm.vx0;
+      this.anim_spt = this.spt.animations.add('jmp', [0, 1, 2, 1, 3], 8, false);
     }
 
     Sprite.prototype.collide_with_pfm = function() {
@@ -210,6 +211,39 @@
 }).call(this);
 
 
+/*  ecrit par fc le 2017-03-31 */
+
+(function() {
+  Phacker.Game.My_camera = (function() {
+    function My_camera(gm) {
+      this.gm = gm;
+      this._fle_ = 'Camera';
+      this.pm = this.gm.parameters.cam = {};
+      this.pm = {
+        offset: this.gm.gameOptions.fullscreen ? 60 : 100,
+        speed: 3,
+        to: 0,
+        initial: 0,
+        dxi: 0
+      };
+      console.log("- " + this._fle_ + " : ", 'im in camera');
+    }
+
+    My_camera.prototype.move = function(spt) {
+      if ((this.gm.camera.x - spt.x + this.pm.offset) < -this.pm.speed) {
+        return this.gm.camera.x += this.pm.speed;
+      } else {
+        return this.gm.camera.x = spt.x - this.pm.offset;
+      }
+    };
+
+    return My_camera;
+
+  })();
+
+}).call(this);
+
+
 /* written by fc on 2017-04-01 */
 
 (function() {
@@ -225,7 +259,8 @@
 
     YourGame.prototype.update = function() {
       YourGame.__super__.update.call(this);
-      return this.spriteO.collide_with_pfm();
+      this.spriteO.collide_with_pfm();
+      return this.cameraO.move(this.spriteO.spt);
     };
 
     YourGame.prototype.resetPlayer = function() {
@@ -242,6 +277,7 @@
       this.platformO = new Phacker.Game.Platform(this.game, this.dangerO);
       this.spriteO = new Phacker.Game.Sprite(this.game, this.dangerO, this.platformO);
       this.bgO.bind(this.spriteO, this.platformO);
+      this.cameraO = new Phacker.Game.My_camera(this.game);
       lostBtn = this.game.add.text(0, 0, "Bad Action");
       lostBtn.inputEnabled = true;
       lostBtn.y = this.game.height * 0.5 - lostBtn.height * 0.5;

@@ -63,7 +63,7 @@ class Phacker.Game.Back_ground
     on_tap:() ->
 
         @sptO.spt.body.velocity.y += @sptO.pm.dvy
-        console.log "- #{@_fle_} : ", '--- im in on tap ---'
+        #console.log "- #{@_fle_} : ", '--- im in on tap ---'
 
     #.----------.----------
     # bind to sprite and plateform

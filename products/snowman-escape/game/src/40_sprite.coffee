@@ -11,6 +11,7 @@ class Phacker.Game.Sprite
             alt_max: 200 # max altitude sprite can reach
             w: 98  # width of the sprite
             h: 105 # height of the sprite
+            vx0: 100
             dvy: 500 # variation of vy when clicking on jump button
             g : 500
             message: "nothing yet" # collide message
@@ -20,9 +21,12 @@ class Phacker.Game.Sprite
         @gm.physics.arcade.enable @spt,Phaser.Physics.ARCADE
         @spt.body.setSize(42, 102, 38, 3) # w, h, offset x, offset y
         @spt.body.bounce.y = 1.2
+        @spt.body.gravity.y = @pm.g
+        @spt.body.velocity.x= @pm.vx0
+
         @anim_spt = @spt.animations.add 'jmp', [0, 1, 2, 1, 3], 8, false
         #@spt.animations.play('jmp')
-        @spt.body.gravity.y = @pm.g
+
 
     #.----------.----------
     # collide sprite with platform
