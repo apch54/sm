@@ -9,15 +9,13 @@ class Phacker.Game.My_camera
         @pm =
             offset     : if @gm.gameOptions.fullscreen then 60 else 100   # left offset for camera
             speed      : 3     # cam speed on left
-            to         : 0     # camera destination
-            initial    : 0
-            dxi        : 0     # intermediate cam location
-
-        console.log "- #{@_fle_} : ", 'im in camera'
 
     #.----------.----------
-    #move camera on left at speed @speed
+    #move camera on left at speed @pm.speed
     #.----------.----------
+
     move:(spt)->
-        if (@gm.camera.x - spt.x + @pm.offset) < -@pm.speed then @gm.camera.x += @pm.speed # for time reseting : not all at once
+
+        if (@gm.camera.x - spt.x + @pm.offset) < -@pm.speed
+            @gm.camera.x += @pm.speed # for time reseting : not all at once
         else @gm.camera.x = spt.x - @pm.offset

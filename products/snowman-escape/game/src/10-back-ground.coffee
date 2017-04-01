@@ -6,7 +6,7 @@ class Phacker.Game.Back_ground
     constructor: (@gm) ->
         @_fle_ = 'Back_ground'
         @pm = @gm.parameters = {}
-        @posX0 = [-400, -300, -200, -100, 0] # init_pos
+        @posX0 = [-300, -250, -200, -150, -100] # init_pos
 
         @pm.gm =
             w:  if @gm.gameOptions.fullscreen  then 375 else 768
@@ -26,9 +26,9 @@ class Phacker.Game.Back_ground
             y0: if @gm.gameOptions.fullscreen then @pm.gm.h + 5  else @pm.gm.h - 18
         @pm.btn.x0 = @pm.bg.middleX - @pm.btn.w / 2
 
-        @bgs = [] # store backgrounds
+        @bgs =  @gm.add.physicsGroup() # make background group # store backgrounds
 
-        @draw_bgs()
+        @draw_bgs() # draw 3 backgrounds
         @draw_btn()
 
       #.----------.----------
@@ -36,19 +36,17 @@ class Phacker.Game.Back_ground
       #.----------.----------
 
     draw_bgs: ->
-        @bg1 = @gm.add.sprite @pm.bg.x0, @pm.bg.y0, 'bg_gameplay' # 768x500
-        @bg1.scale.setTo(1, @pm.bg.scaleY)
-        @bgs.push @bg1
+        bg1 =  @bgs.create @pm.bg.x0, @pm.bg.y0, 'bg_gameplay' # 768x500
+        bg1.scale.setTo(1, @pm.bg.scaleY)
 
-        x2 = @bg1.x + @pm.bg.w
-        @bg2 = @gm.add.sprite x2, @pm.bg.y0, 'bg_gameplay' # 768x500
-        @bg2.scale.setTo(1, @pm.bg.scaleY)
-        @bgs.push @bg2
+        x2 = bg1.x + @pm.bg.w
+        bg2 =  @bgs.create x2, @pm.bg.y0, 'bg_gameplay' # 768x500
+        bg2.scale.setTo(1, @pm.bg.scaleY)
 
-        x3 = @bg2.x + @pm.bg.w
-        @bg3 = @gm.add.sprite x3, @pm.bg.y0, 'bg_gameplay' # 768x500
-        @bg3.scale.setTo(1, @pm.bg.scaleY)
-        @bgs.push @bg3
+        #x3 = @bg2.x + @pm.bg.w
+        #@bg3 = @gm.add.sprite x3, @pm.bg.y0, 'bg_gameplay' # 768x500
+        #@bg3.scale.setTo(1, @pm.bg.scaleY)
+
         #console.log "- #{@_fle_} : ",@bgs[0].x,  @bgs[1].x, @bgs[2].x
         #@bg.fixedToCamera = true
 
@@ -73,6 +71,20 @@ class Phacker.Game.Back_ground
         @sptO = sptO
         @pfmO = pfmO
         #console.log "- #{@_fle_} : ",sptO, pfmO
+
+    #.----------.----------
+    # bind to sprite and plateform
+    #.----------.----------
+    create_destroy:() ->
+        bg0 = @bgs.getAt(0)
+        #console.log "- #{@_fle_} : ",@sptO.spt.x - @pm.bg.w ,  bg0.x
+
+        if @sptO.spt.x - @pm.bg.w  >=  bg0.x + 100
+            bg0.destroy()
+
+            x3 = @bgs.getAt(@bgs.length - 1).x  + @pm.bg.w
+            bg3 =  @bgs.create x3, @pm.bg.y0, 'bg_gameplay' # 768x500
+            bg3.scale.setTo(1, @pm.bg.scaleY)
 
 
 

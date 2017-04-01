@@ -7,7 +7,7 @@
       this.gm = gm;
       this._fle_ = 'Back_ground';
       this.pm = this.gm.parameters = {};
-      this.posX0 = [-400, -300, -200, -100, 0];
+      this.posX0 = [-300, -250, -200, -150, -100];
       this.pm.gm = {
         w: this.gm.gameOptions.fullscreen ? 375 : 768,
         h: this.gm.gameOptions.fullscreen ? 559 - 48 : 500 - 48
@@ -26,24 +26,18 @@
         y0: this.gm.gameOptions.fullscreen ? this.pm.gm.h + 5 : this.pm.gm.h - 18
       };
       this.pm.btn.x0 = this.pm.bg.middleX - this.pm.btn.w / 2;
-      this.bgs = [];
+      this.bgs = this.gm.add.physicsGroup();
       this.draw_bgs();
       this.draw_btn();
     }
 
     Back_ground.prototype.draw_bgs = function() {
-      var x2, x3;
-      this.bg1 = this.gm.add.sprite(this.pm.bg.x0, this.pm.bg.y0, 'bg_gameplay');
-      this.bg1.scale.setTo(1, this.pm.bg.scaleY);
-      this.bgs.push(this.bg1);
-      x2 = this.bg1.x + this.pm.bg.w;
-      this.bg2 = this.gm.add.sprite(x2, this.pm.bg.y0, 'bg_gameplay');
-      this.bg2.scale.setTo(1, this.pm.bg.scaleY);
-      this.bgs.push(this.bg2);
-      x3 = this.bg2.x + this.pm.bg.w;
-      this.bg3 = this.gm.add.sprite(x3, this.pm.bg.y0, 'bg_gameplay');
-      this.bg3.scale.setTo(1, this.pm.bg.scaleY);
-      return this.bgs.push(this.bg3);
+      var bg1, bg2, x2;
+      bg1 = this.bgs.create(this.pm.bg.x0, this.pm.bg.y0, 'bg_gameplay');
+      bg1.scale.setTo(1, this.pm.bg.scaleY);
+      x2 = bg1.x + this.pm.bg.w;
+      bg2 = this.bgs.create(x2, this.pm.bg.y0, 'bg_gameplay');
+      return bg2.scale.setTo(1, this.pm.bg.scaleY);
     };
 
     Back_ground.prototype.draw_btn = function() {
@@ -58,6 +52,17 @@
     Back_ground.prototype.bind = function(sptO, pfmO) {
       this.sptO = sptO;
       return this.pfmO = pfmO;
+    };
+
+    Back_ground.prototype.create_destroy = function() {
+      var bg0, bg3, x3;
+      bg0 = this.bgs.getAt(0);
+      if (this.sptO.spt.x - this.pm.bg.w >= bg0.x + 100) {
+        bg0.destroy();
+        x3 = this.bgs.getAt(this.bgs.length - 1).x + this.pm.bg.w;
+        bg3 = this.bgs.create(x3, this.pm.bg.y0, 'bg_gameplay');
+        return bg3.scale.setTo(1, this.pm.bg.scaleY);
+      }
     };
 
     return Back_ground;
@@ -221,12 +226,8 @@
       this.pm = this.gm.parameters.cam = {};
       this.pm = {
         offset: this.gm.gameOptions.fullscreen ? 60 : 100,
-        speed: 3,
-        to: 0,
-        initial: 0,
-        dxi: 0
+        speed: 3
       };
-      console.log("- " + this._fle_ + " : ", 'im in camera');
     }
 
     My_camera.prototype.move = function(spt) {
@@ -260,7 +261,8 @@
     YourGame.prototype.update = function() {
       YourGame.__super__.update.call(this);
       this.spriteO.collide_with_pfm();
-      return this.cameraO.move(this.spriteO.spt);
+      this.cameraO.move(this.spriteO.spt);
+      return this.bgO.create_destroy();
     };
 
     YourGame.prototype.resetPlayer = function() {
