@@ -39,8 +39,9 @@
       bg2 = this.bgs.create(x2, this.pm.bg.y0, 'bg_gameplay');
       bg2.scale.setTo(1, this.pm.bg.scaleY);
       x3 = bg2.x + this.pm.bg.w;
-      bg3 = this.gm.add.sprite(x3, this.bgs.create(x3, this.pm.bg.y0, 'bg_gameplay'));
-      return bg3.scale.setTo(1, this.pm.bg.scaleY);
+      bg3 = this.bgs.create(x2, this.pm.bg.y0, 'bg_gameplay');
+      bg3.scale.setTo(1, this.pm.bg.scaleY);
+      return console.log("- " + this._fle_ + " : ", this.bgs.length);
     };
 
     Back_ground.prototype.draw_btn = function() {
@@ -61,7 +62,7 @@
     Back_ground.prototype.create_destroy = function() {
       var bg0, bg3, x3;
       bg0 = this.bgs.getAt(0);
-      if (this.sptO.spt.x - this.pm.bg.w >= bg0.x + 200) {
+      if (this.gm.camera.x > bg0.x + this.pm.bg.w) {
         bg0.destroy();
         x3 = this.bgs.getAt(this.bgs.length - 1).x + this.pm.bg.w;
         bg3 = this.bgs.create(x3, this.pm.bg.y0, 'bg_gameplay');
@@ -110,8 +111,8 @@
     Danger.prototype.destroy = function(spt) {
       var dg0;
       dg0 = this.dgr.getAt(0);
-      if (spt.x - this.pm.w - 200 >= dg0.x) {
-        return dg0.destroy();
+      if (this.gm.camera.x > dg0.x + this.pm.w) {
+        return dg0.destroy;
       }
     };
 
@@ -170,7 +171,7 @@
     Platform.prototype.create_destroy = function() {
       var pf0, x3, ynd;
       pf0 = this.pfm.getAt(0);
-      if (this.sptO.spt.x - this.pm.w - 200 >= pf0.x) {
+      if (this.gm.camera.x > pf0.x + this.pm.w) {
         pf0.destroy();
         ynd = this.game_rules();
         x3 = this.pfm.getAt(this.pfm.length - 1).x + this.pm.w;

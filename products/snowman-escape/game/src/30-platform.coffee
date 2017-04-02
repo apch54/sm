@@ -49,7 +49,8 @@ class Phacker.Game.Platform
 
         pf0 = @pfm.getAt(0)
 
-        if @sptO.spt.x - @pm.w - 200  >=  pf0.x
+        #if @sptO.spt.x - @pm.w - 200  >=  pf0.x
+        if  @gm.camera.x > pf0.x + @pm.w
             pf0.destroy()
             ynd = @game_rules()
             #console.log "- #{@_fle_} : ",ynd
@@ -66,6 +67,7 @@ class Phacker.Game.Platform
 
         yy = lastP.y
         return {y: yy, nd: nn}
+
     #----------.----------
     # bindd to spriteO
     #----------.----------

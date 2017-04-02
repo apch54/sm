@@ -36,5 +36,6 @@ class Phacker.Game.Danger
     #----------.----------
     destroy: (spt) ->
         dg0 = @dgr.getAt(0)
-        if spt.x - @pm.w - 200>=  dg0.x  then dg0.destroy()
+        #if spt.x - @pm.w - 200>=  dg0.x  then dg0.destroy()
+        if @gm.camera.x >dg0.x + @pm.w then dg0.destroy
 
