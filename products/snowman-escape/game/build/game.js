@@ -120,7 +120,7 @@
       this._fle_ = 'Platform';
       this.pm = this.gm.parameters.pfm = {};
       this.pm = {
-        x0: 0,
+        x0: -100,
         y0: this.gm.gameOptions.fullscreen ? 460 : 390,
         w: 123,
         h: 34,
@@ -153,6 +153,8 @@
       this.pm.last_x = p.x;
       return p.body.immovable = true;
     };
+
+    Platform.prototype.create_destroy = function() {};
 
     return Platform;
 

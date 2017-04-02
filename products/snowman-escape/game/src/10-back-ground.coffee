@@ -72,8 +72,8 @@ class Phacker.Game.Back_ground
         @pfmO = pfmO
         #console.log "- #{@_fle_} : ",sptO, pfmO
 
-    #.----------.----------
-    # bind to sprite and plateform
+    #.----------.---------- 
+    #  rolling in platform
     #.----------.----------
     create_destroy:() ->
         bg0 = @bgs.getAt(0)

@@ -6,7 +6,7 @@ class Phacker.Game.Platform
         @_fle_ = 'Platform'
         @pm = @gm.parameters.pfm = {}
         @pm = # platform parameters
-            x0: 0
+            x0: -100
             y0: if @gm.gameOptions.fullscreen  then 460 else 390
             w: 123
             h: 34
@@ -25,7 +25,7 @@ class Phacker.Game.Platform
     init_pfm:->
 
         @make_one_pfm(@pm.x0, @pm.y0, 0)
-        for i in [1..@pm.n - 1] #  n >= 2
+        for i in [1..@pm.n - 1] #  @pm.n #must be# >= 2
 
             if i in [2, 5] then nd = 1 else nd = 0 # danger nb
             @make_one_pfm(@pm.last_x + @pm.w, @pm.y0, nd)
@@ -41,6 +41,11 @@ class Phacker.Game.Platform
         p =   @pfm.create x, y, "platform"
         @pm.last_x = p.x
         p.body.immovable = true
+
+    #----------.----------
+    # create_destroy platforms
+    #----------.----------
+    create_destroy: () ->
 
 
 

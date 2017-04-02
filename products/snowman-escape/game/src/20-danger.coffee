@@ -12,7 +12,7 @@ class Phacker.Game.Danger
             proba : 50 # 50%
             n: 1 # nuber max of danger on each platform
             dy: 24  # relative danger obj location against platform
-            dx: 10
+            dx: 10 # offset  danger.x against platform.x
 
         @dgr = @gm.add.physicsGroup() # make ganger group
         @dgr.enableBody = true
