@@ -32,12 +32,15 @@
     }
 
     Back_ground.prototype.draw_bgs = function() {
-      var bg1, bg2, x2;
+      var bg1, bg2, bg3, x2, x3;
       bg1 = this.bgs.create(this.pm.bg.x0, this.pm.bg.y0, 'bg_gameplay');
       bg1.scale.setTo(1, this.pm.bg.scaleY);
       x2 = bg1.x + this.pm.bg.w;
       bg2 = this.bgs.create(x2, this.pm.bg.y0, 'bg_gameplay');
-      return bg2.scale.setTo(1, this.pm.bg.scaleY);
+      bg2.scale.setTo(1, this.pm.bg.scaleY);
+      x3 = bg2.x + this.pm.bg.w;
+      bg3 = this.gm.add.sprite(x3, this.bgs.create(x3, this.pm.bg.y0, 'bg_gameplay'));
+      return bg3.scale.setTo(1, this.pm.bg.scaleY);
     };
 
     Back_ground.prototype.draw_btn = function() {
@@ -46,7 +49,8 @@
     };
 
     Back_ground.prototype.on_tap = function() {
-      return this.sptO.spt.body.velocity.y += this.sptO.pm.dvy;
+      this.sptO.spt.body.velocity.y += this.sptO.pm.dvy;
+      return this.sptO.spt.body.velocity.x += 200;
     };
 
     Back_ground.prototype.bind = function(sptO, pfmO) {
@@ -57,7 +61,7 @@
     Back_ground.prototype.create_destroy = function() {
       var bg0, bg3, x3;
       bg0 = this.bgs.getAt(0);
-      if (this.sptO.spt.x - this.pm.bg.w >= bg0.x + 100) {
+      if (this.sptO.spt.x - this.pm.bg.w >= bg0.x + 200) {
         bg0.destroy();
         x3 = this.bgs.getAt(this.bgs.length - 1).x + this.pm.bg.w;
         bg3 = this.bgs.create(x3, this.pm.bg.y0, 'bg_gameplay');
@@ -101,6 +105,14 @@
         x += this.pm.w;
       }
       return this.gm.world.bringToTop(this.dgr);
+    };
+
+    Danger.prototype.destroy = function(spt) {
+      var dg0;
+      dg0 = this.dgr.getAt(0);
+      if (spt.x - this.pm.w - 200 >= dg0.x) {
+        return dg0.destroy();
+      }
     };
 
     return Danger;
@@ -158,12 +170,11 @@
     Platform.prototype.create_destroy = function() {
       var pf0, x3, ynd;
       pf0 = this.pfm.getAt(0);
-      if (this.sptO.spt.x - this.pm.w >= pf0.x + 100) {
+      if (this.sptO.spt.x - this.pm.w - 200 >= pf0.x) {
         pf0.destroy();
         ynd = this.game_rules();
-        console.log("- " + this._fle_ + " : ", ynd);
         x3 = this.pfm.getAt(this.pfm.length - 1).x + this.pm.w;
-        return this.make_one_pfm(x3, this.pm.y0, ynd.nd);
+        return this.make_one_pfm(x3, ynd.y, ynd.nd);
       }
     };
 
@@ -227,7 +238,8 @@
     Sprite.prototype.collide_with_pfm = function() {
       if ((this.pfmO.pm.y0 - this.spt.y) > this.pm.alt_max) {
         this.spt.body.velocity.y = 10;
-        this.spt.y += 5;
+        this.spt.body.velocity.x = this.pm.vx0;
+        this.spt.y += 3;
       }
       if (this.gm.physics.arcade.collide(this.spt, this.pfmO.pfm, function() {
         return true;
@@ -295,7 +307,8 @@
       this.spriteO.collide_with_pfm();
       this.cameraO.move(this.spriteO.spt);
       this.bgO.create_destroy();
-      return this.platformO.create_destroy();
+      this.platformO.create_destroy();
+      return this.dangerO.destroy(this.spriteO.spt);
     };
 
     YourGame.prototype.resetPlayer = function() {

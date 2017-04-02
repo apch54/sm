@@ -35,7 +35,9 @@ class Phacker.Game.Sprite
 
         if (@pfmO.pm.y0 - @spt.y) > @pm.alt_max
             @spt.body.velocity.y = 10
-            @spt.y += 5
+            @spt.body.velocity.x = @pm.vx0
+            @spt.y += 3
+
         if @gm.physics.arcade.collide(
             @spt, @pfmO.pfm
             -> return true

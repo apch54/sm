@@ -48,14 +48,13 @@ class Phacker.Game.Platform
     create_destroy: () ->
 
         pf0 = @pfm.getAt(0)
-        #console.log "- #{@_fle_} : ",@sptO.spt.x - @pm.bg.w ,  bg0.x
 
-        if @sptO.spt.x - @pm.w  >=  pf0.x + 100
+        if @sptO.spt.x - @pm.w - 200  >=  pf0.x
             pf0.destroy()
             ynd = @game_rules()
-            console.log "- #{@_fle_} : ",ynd
+            #console.log "- #{@_fle_} : ",ynd
             x3 = @pfm.getAt(@pfm.length - 1).x  + @pm.w
-            @make_one_pfm(x3, @pm.y0, ynd.nd)
+            @make_one_pfm(x3, ynd.y, ynd.nd)
 
     #----------.----------
     # game rules

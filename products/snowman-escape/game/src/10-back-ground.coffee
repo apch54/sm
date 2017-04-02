@@ -43,9 +43,9 @@ class Phacker.Game.Back_ground
         bg2 =  @bgs.create x2, @pm.bg.y0, 'bg_gameplay' # 768x500
         bg2.scale.setTo(1, @pm.bg.scaleY)
 
-        #x3 = @bg2.x + @pm.bg.w
-        #@bg3 = @gm.add.sprite x3, @pm.bg.y0, 'bg_gameplay' # 768x500
-        #@bg3.scale.setTo(1, @pm.bg.scaleY)
+        x3 = bg2.x + @pm.bg.w
+        bg3 = @gm.add.sprite x3,  @bgs.create x3, @pm.bg.y0, 'bg_gameplay' # 768x500
+        bg3.scale.setTo(1, @pm.bg.scaleY)
 
         #console.log "- #{@_fle_} : ",@bgs[0].x,  @bgs[1].x, @bgs[2].x
         #@bg.fixedToCamera = true
@@ -54,13 +54,12 @@ class Phacker.Game.Back_ground
     # button
     #.----------.----------
     draw_btn: ->
-
         @btn = @gm.add.button @pm.btn.x0, @pm.btn.y0, 'jump_btn', @on_tap, @, 1, 1, 0
         @btn.fixedToCamera = true
 
     on_tap:() ->
-
         @sptO.spt.body.velocity.y += @sptO.pm.dvy
+        @sptO.spt.body.velocity.x += 200
         #console.log "- #{@_fle_} : ", '--- im in on tap ---'
 
     #.----------.----------
@@ -79,7 +78,7 @@ class Phacker.Game.Back_ground
         bg0 = @bgs.getAt(0)
         #console.log "- #{@_fle_} : ",@sptO.spt.x - @pm.bg.w ,  bg0.x
 
-        if @sptO.spt.x - @pm.bg.w  >=  bg0.x + 100
+        if @sptO.spt.x - @pm.bg.w  >=  bg0.x + 200
             bg0.destroy()
 
             x3 = @bgs.getAt(@bgs.length - 1).x  + @pm.bg.w

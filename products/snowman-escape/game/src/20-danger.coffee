@@ -31,3 +31,10 @@ class Phacker.Game.Danger
 
          @gm.world.bringToTop @dgr
 
+    #----------.----------
+    # create_destroy danger pines
+    #----------.----------
+    destroy: (spt) ->
+        dg0 = @dgr.getAt(0)
+        if spt.x - @pm.w - 200>=  dg0.x  then dg0.destroy()
+
