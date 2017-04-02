@@ -4,15 +4,16 @@ class Phacker.Game.Danger
 
     constructor: (@gm) ->
         @_fle_ = 'Danger'
-        @pm = @gm.parameters.dgr = {}
-        #@pm = @gm.parameters.dgr
-        @pm =
+
+        @pm = @gm.parameters.dgr =
             w: 34
             h: 38
             proba : 50 # 50%
             n: 1 # nuber max of danger on each platform
             dy: 24  # relative danger obj location against platform
             dx: 10 # offset  danger.x against platform.x
+            scaleX: .7
+        @pm.w = @pm.w * @pm.scaleX
 
         @dgr = @gm.add.physicsGroup() # make ganger group
         @dgr.enableBody = true
@@ -27,6 +28,7 @@ class Phacker.Game.Danger
          while nd > i++
             d = @dgr.create x, y, "danger"
             d.body.immovable = true
+            d.scale.setTo @pm.scaleX, 1
             x += @pm.w
 
          @gm.world.bringToTop @dgr

@@ -24,6 +24,8 @@ class Phacker.Game.Back_ground
             w: 200
             h: 55
             y0: if @gm.gameOptions.fullscreen then @pm.gm.h + 5  else @pm.gm.h - 18
+            had_tapped: false
+            topCollidePfm : 0 # top collision pfm against sprite
         @pm.btn.x0 = @pm.bg.middleX - @pm.btn.w / 2
 
         @bgs =  @gm.add.physicsGroup() # make background group # store backgrounds
@@ -53,13 +55,20 @@ class Phacker.Game.Back_ground
     # button
     #.----------.----------
     draw_btn: ->
-        @btn = @gm.add.button @pm.btn.x0, @pm.btn.y0, 'jump_btn', @on_tap, @, 1, 1, 0
+        @btn = @gm.add.button @pm.btn.x0, @pm.btn.y0, 'jump_btn', @on_tapUp, @, 1, 1, 0
         @btn.fixedToCamera = true
+        @btn.onInputDown.add @on_tapDown, @
 
-    on_tap:() ->
-        @sptO.spt.body.velocity.y += @sptO.pm.dvy
-        @sptO.spt.body.velocity.x += 200
+    on_tapDown:() ->
+        # avoid double bounce
+        if new Date().getTime()- @pm.btn.topCollidePfm   < 300 then return
+        if @pm.btn.had_tapped then return
+        @sptO.spt.body.velocity.y = @sptO.pm.dvy
+        @sptO.spt.body.velocity.x /= 2
+        @pm.btn.had_tapped = true
         #console.log "- #{@_fle_} : ", '--- im in on tap ---'
+
+    on_tapUp: -> return # do nothing
 
     #.----------.----------
     # bind to sprite and plateform
