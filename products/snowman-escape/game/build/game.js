@@ -42,8 +42,7 @@
       bg2.scale.setTo(1, this.pm.bg.scaleY);
       x3 = bg2.x + this.pm.bg.w;
       bg3 = this.bgs.create(x2, this.pm.bg.y0, 'bg_gameplay');
-      bg3.scale.setTo(1, this.pm.bg.scaleY);
-      return console.log("- " + this._fle_ + " : ", this.bgs.length);
+      return bg3.scale.setTo(1, this.pm.bg.scaleY);
     };
 
     Back_ground.prototype.draw_btn = function() {
@@ -53,13 +52,14 @@
     };
 
     Back_ground.prototype.on_tapDown = function() {
-      if (new Date().getTime() - this.pm.btn.topCollidePfm < 300) {
+      if (new Date().getTime() - this.pm.btn.topCollidePfm < 100) {
         return;
       }
       if (this.pm.btn.had_tapped) {
         return;
       }
       this.sptO.spt.body.velocity.y = this.sptO.pm.dvy;
+      this.sptO.spt.body.velocity.x /= 2;
       return this.pm.btn.had_tapped = true;
     };
 
@@ -222,10 +222,11 @@
 
 (function() {
   Phacker.Game.Sprite = (function() {
-    function Sprite(gm, dgrO, pfmO) {
+    function Sprite(gm, dgrO, pfmO, bnsO) {
       this.gm = gm;
       this.dgrO = dgrO;
       this.pfmO = pfmO;
+      this.bnsO = bnsO;
       this._fle_ = 'Sprite';
       this.pm = this.gm.parameters.spt = {
         x0: 50,
@@ -249,17 +250,16 @@
     }
 
     Sprite.prototype.collide_with_pfm = function() {
-      var dt;
       if ((this.pfmO.pm.y0 - this.spt.y) > this.pm.alt_max) {
         this.spt.body.velocity.y = 10;
         this.spt.body.velocity.x = this.pm.vx0;
         this.gm.parameters.btn.had_tapped = false;
-        this.gm.parameters.btn.topCollidePfm = dt = new Date().getTime();
         this.spt.y += 3;
       }
       if (this.gm.physics.arcade.collide(this.spt, this.pfmO.pfm, function() {
         return true;
       }, function(spt, pfm) {
+        this.gm.parameters.btn.topCollidePfm = new Date().getTime();
         this.spt.body.velocity.x = this.pm.vx0;
         this.spt.animations.play('jmp');
         return true;
@@ -313,14 +313,21 @@
   Phacker.Game.Bonus = (function() {
     function Bonus(gm) {
       this.gm = gm;
-      this._fle_ = 'Back_ground';
+      this._fle_ = 'Bonus';
       this.pm = this.gm.parameters.bns = {
         w: 35,
-        h: 47
+        h: 47,
+        alt: 220
       };
       this.bns = this.gm.add.physicsGroup();
       this.bns.enableBody = true;
     }
+
+    Bonus.prototype.make_bonus = function() {
+      var bn;
+      bn = this.dgr.create(x, y, "bonus_sprite");
+      return bn.body.immovable = true;
+    };
 
     return Bonus;
 
@@ -363,11 +370,10 @@
       this.bgO = new Phacker.Game.Back_ground(this.game);
       this.dangerO = new Phacker.Game.Danger(this.game);
       this.platformO = new Phacker.Game.Platform(this.game, this.dangerO);
-      this.spriteO = new Phacker.Game.Sprite(this.game, this.dangerO, this.platformO);
+      this.bonusO = new Phacker.Game.Bonus(this.game);
+      this.spriteO = new Phacker.Game.Sprite(this.game, this.dangerO, this.platformO, this.bonusO);
       this.bgO.bind(this.spriteO, this.platformO);
       this.platformO.bind(this.spriteO);
-      this.game.bonusO = new Phacker.Game.Bonus(this.game);
-      console.log("- " + this._fle_ + " : ", this.game.bonusO);
       this.cameraO = new Phacker.Game.My_camera(this.game);
       lostBtn = this.game.add.text(0, 0, "Bad Action");
       lostBtn.inputEnabled = true;

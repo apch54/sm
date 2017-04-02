@@ -1,7 +1,7 @@
 ###  written by fc on 2017-03-31  ###
 class Phacker.Game.Sprite
 
-    constructor: (@gm, @dgrO, @pfmO) ->
+    constructor: (@gm, @dgrO, @pfmO, @bnsO) ->
         @_fle_ = 'Sprite'
 
         @pm = @gm.parameters.spt =
@@ -36,13 +36,13 @@ class Phacker.Game.Sprite
             @spt.body.velocity.y = 10
             @spt.body.velocity.x = @pm.vx0
             @gm.parameters.btn.had_tapped = false
-            @gm.parameters.btn.topCollidePfm = dt = new Date().getTime()
             @spt.y += 3
 
         if @gm.physics.arcade.collide(
             @spt, @pfmO.pfm
             -> return true
             (spt, pfm)-> #@when_collide_with_pfm(spt, pfm)
+                @gm.parameters.btn.topCollidePfm = new Date().getTime()
                 @spt.body.velocity.x = @pm.vx0
                 @spt.animations.play 'jmp'
                 return true

@@ -48,7 +48,6 @@ class Phacker.Game.Back_ground
         x3 = bg2.x + @pm.bg.w
         bg3 = @bgs.create x2, @pm.bg.y0, 'bg_gameplay' # 768x500
         bg3.scale.setTo(1, @pm.bg.scaleY)
-        console.log "- #{@_fle_} : ", @bgs.length
 
 
     #.----------.----------
@@ -61,7 +60,7 @@ class Phacker.Game.Back_ground
 
     on_tapDown:() ->
         # avoid double bounce
-        if new Date().getTime()- @pm.btn.topCollidePfm   < 300 then return
+        if new Date().getTime()- @pm.btn.topCollidePfm   < 100 then return
         if @pm.btn.had_tapped then return
         @sptO.spt.body.velocity.y = @sptO.pm.dvy
         @sptO.spt.body.velocity.x /= 2

@@ -11,11 +11,16 @@
 class Phacker.Game.Bonus
 
    constructor: (@gm) ->
-       @_fle_ = 'Back_ground'
+       @_fle_ = 'Bonus'
 
        @pm = @gm.parameters.bns =
-          w: 35
-          h: 47
+            w: 35
+            h: 47
+            alt:  220 #@gm.parameters.spt.alt_max
 
        @bns = @gm.add.physicsGroup() # make bonus group
        @bns.enableBody = true
+
+   make_bonus : ->
+        bn = @dgr.create x, y, "bonus_sprite"
+        bn.body.immovable = true
