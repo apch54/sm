@@ -35,10 +35,10 @@ class Phacker.Game.Platform
     #.----------.----------
 
     make_one_pfm: (x,y,nd) -> # nd stands for danger nb
-
         @dgrO.make_danger(x + @dgrO.pm.dx, y - @dgrO.pm.dy, nd)
 
         p =   @pfm.create x, y, "platform"
+        p.n_danger = nd
         @pm.last_x = p.x
         p.body.immovable = true
 
@@ -46,6 +46,32 @@ class Phacker.Game.Platform
     # create_destroy platforms
     #----------.----------
     create_destroy: () ->
+
+        pf0 = @pfm.getAt(0)
+        #console.log "- #{@_fle_} : ",@sptO.spt.x - @pm.bg.w ,  bg0.x
+
+        if @sptO.spt.x - @pm.w  >=  pf0.x + 100
+            pf0.destroy()
+            ynd = @game_rules()
+            console.log "- #{@_fle_} : ",ynd
+            x3 = @pfm.getAt(@pfm.length - 1).x  + @pm.w
+            @make_one_pfm(x3, @pm.y0, ynd.nd)
+
+    #----------.----------
+    # game rules
+    #----------.----------
+    game_rules:->
+        lastP =  @pfm.getAt(@pfm.length - 1) # last pfm
+        if lastP.n_danger > 0 then nn = 0
+        else nn = @gm.rnd.integerInRange(1, 3)
+
+        yy = lastP.y
+        return {y: yy, nd: nn}
+    #----------.----------
+    # bindd to spriteO
+    #----------.----------
+    bind:(sptO)-> @sptO = sptO
+
 
 
 

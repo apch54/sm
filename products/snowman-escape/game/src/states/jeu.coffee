@@ -16,6 +16,7 @@ class @YourGame extends Phacker.GameState
 				@spriteO.collide_with_pfm()
 				@cameraO.move @spriteO.spt
 				@bgO.create_destroy()
+				@platformO.create_destroy()
 
 
 		resetPlayer: ->
@@ -33,6 +34,7 @@ class @YourGame extends Phacker.GameState
 
 				@spriteO = new Phacker.Game.Sprite @game , @dangerO, @platformO
 				@bgO.bind @spriteO, @platformO
+				@platformO.bind @spriteO
 
 				@cameraO = new Phacker.Game.My_camera @game
 

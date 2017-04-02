@@ -150,11 +150,41 @@
       var p;
       this.dgrO.make_danger(x + this.dgrO.pm.dx, y - this.dgrO.pm.dy, nd);
       p = this.pfm.create(x, y, "platform");
+      p.n_danger = nd;
       this.pm.last_x = p.x;
       return p.body.immovable = true;
     };
 
-    Platform.prototype.create_destroy = function() {};
+    Platform.prototype.create_destroy = function() {
+      var pf0, x3, ynd;
+      pf0 = this.pfm.getAt(0);
+      if (this.sptO.spt.x - this.pm.w >= pf0.x + 100) {
+        pf0.destroy();
+        ynd = this.game_rules();
+        console.log("- " + this._fle_ + " : ", ynd);
+        x3 = this.pfm.getAt(this.pfm.length - 1).x + this.pm.w;
+        return this.make_one_pfm(x3, this.pm.y0, ynd.nd);
+      }
+    };
+
+    Platform.prototype.game_rules = function() {
+      var lastP, nn, yy;
+      lastP = this.pfm.getAt(this.pfm.length - 1);
+      if (lastP.n_danger > 0) {
+        nn = 0;
+      } else {
+        nn = this.gm.rnd.integerInRange(1, 3);
+      }
+      yy = lastP.y;
+      return {
+        y: yy,
+        nd: nn
+      };
+    };
+
+    Platform.prototype.bind = function(sptO) {
+      return this.sptO = sptO;
+    };
 
     return Platform;
 
@@ -264,7 +294,8 @@
       YourGame.__super__.update.call(this);
       this.spriteO.collide_with_pfm();
       this.cameraO.move(this.spriteO.spt);
-      return this.bgO.create_destroy();
+      this.bgO.create_destroy();
+      return this.platformO.create_destroy();
     };
 
     YourGame.prototype.resetPlayer = function() {
@@ -281,6 +312,7 @@
       this.platformO = new Phacker.Game.Platform(this.game, this.dangerO);
       this.spriteO = new Phacker.Game.Sprite(this.game, this.dangerO, this.platformO);
       this.bgO.bind(this.spriteO, this.platformO);
+      this.platformO.bind(this.spriteO);
       this.cameraO = new Phacker.Game.My_camera(this.game);
       lostBtn = this.game.add.text(0, 0, "Bad Action");
       lostBtn.inputEnabled = true;
