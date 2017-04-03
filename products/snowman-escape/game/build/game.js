@@ -104,7 +104,7 @@
         dx: 10,
         scaleX: .7
       };
-      this.pm.w = this.pm.w * this.pm.scaleX;
+      this.pm.w = this.pm.w * this.pm.scaleX - 5;
       this.dgr = this.gm.add.physicsGroup();
       this.dgr.enableBody = true;
     }
@@ -116,6 +116,7 @@
         d = this.dgr.create(x, y, "danger");
         d.body.immovable = true;
         d.scale.setTo(this.pm.scaleX, 1);
+        d.body.setSize(16, 38, 9, 0);
         x += this.pm.w;
       }
       return this.gm.world.bringToTop(this.dgr);

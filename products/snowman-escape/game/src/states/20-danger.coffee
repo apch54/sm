@@ -13,7 +13,7 @@ class Phacker.Game.Danger
             dy: 24  # relative danger obj location against platform
             dx: 10 # offset  danger.x against platform.x
             scaleX: .7
-        @pm.w = @pm.w * @pm.scaleX
+        @pm.w = @pm.w * @pm.scaleX - 5
 
         @dgr = @gm.add.physicsGroup() # make ganger group
         @dgr.enableBody = true
@@ -29,6 +29,7 @@ class Phacker.Game.Danger
             d = @dgr.create x, y, "danger"
             d.body.immovable = true
             d.scale.setTo @pm.scaleX, 1
+            d.body.setSize(16, 38, 9, 0) # w, h, offset x, offset y
             x += @pm.w
 
          @gm.world.bringToTop @dgr
