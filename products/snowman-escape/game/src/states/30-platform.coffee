@@ -2,7 +2,7 @@
 
 class Phacker.Game.Platform
 
-    constructor: (@gm, @dgrO) ->
+    constructor: (@gm, @dgrO, @bnsO) ->
         @_fle_ = 'Platform'
         @pm = @gm.parameters.pfm = {}
         @pm = # platform parameters
@@ -28,7 +28,9 @@ class Phacker.Game.Platform
         for i in [1..@pm.n - 1] #  @pm.n #must be# >= 2
 
             if i in [2, 5] then nd = 1 else nd = 0 # danger nb
-            @make_one_pfm(@pm.last_x + @pm.w, @pm.y0, nd)
+            @make_one_pfm @pm.last_x + @pm.w, @pm.y0, nd
+
+            if i is 3 then @bnsO.make_bonus @pm.last_x + @pm.w, @pm.y0
 
     #.----------.----------
     # make one pfm
@@ -71,7 +73,9 @@ class Phacker.Game.Platform
     #----------.----------
     # bindd to spriteO
     #----------.----------
-    bind:(sptO)-> @sptO = sptO
+    bind:(sptO) ->
+        @sptO = sptO
+        #@bnsO = bnsO
 
 
 

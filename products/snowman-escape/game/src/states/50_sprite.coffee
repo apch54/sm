@@ -38,19 +38,27 @@ class Phacker.Game.Sprite
             @gm.parameters.btn.had_tapped = false
             @spt.y += 3
 
+        #console.log "- #{@_fle_} : ",@bnsO.bns.getAt(0).x
+        if 0 < @bnsO.bns.getAt(0).x - @spt.x < 10
+            @bnsO.bns.getAt(0).fly.start()
+            #@bnsO.bns.getAt(0).destroy()
+
         if @gm.physics.arcade.collide(
             @spt, @pfmO.pfm
             -> return true
-            (spt, pfm)-> #@when_collide_with_pfm(spt, pfm)
-                @gm.parameters.btn.topCollidePfm = new Date().getTime()
-                @spt.body.velocity.x = @pm.vx0
-                @spt.animations.play 'jmp'
-                return true
+            (spt, pfm)-> @when_collide_with_pfm(spt, pfm)
             @
         ) then return @pm.message
         return 'nothing'
 
     when_collide_with_pfm:(spt, pfm) ->
         #console.log "- #{@_fle_} :", pfm.key
+        @gm.parameters.btn.topCollidePfm = new Date().getTime()
+        spt.body.velocity.x = @pm.vx0
+        spt.animations.play 'jmp'
+        return true
 
-
+    #.----------.----------
+    # collide with dangers : @dgr
+    #.----------.----------
+    collide_with_dgr:->

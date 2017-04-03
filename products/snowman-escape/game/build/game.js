@@ -136,13 +136,63 @@
 }).call(this);
 
 
+/* * Created by apch on 02/04/2017 * */
+
+(function() {
+  Phacker.Game.Bonus = (function() {
+    function Bonus(gm) {
+      this.gm = gm;
+      this._fle_ = 'Bonus';
+      this.pm = this.gm.parameters.bns = {
+        w: 35,
+        h: 47,
+        alt: 200
+      };
+      this.bns = this.gm.add.physicsGroup();
+      this.bns.enableBody = true;
+    }
+
+    Bonus.prototype.make_bonus = function(x, y) {
+      var bn;
+      bn = this.gm.add.sprite(x, y - this.pm.alt, 'bonus_sprite');
+      this.bns.add(bn);
+      return bn.fly = this.make_twn_fly(bn);
+    };
+
+    Bonus.prototype.make_twn_fly = function(bn) {
+      var fly, x1, y1, yy;
+      yy = [-300, +300];
+      y1 = yy[this.gm.rnd.integerInRange(0, 1)] + bn.y;
+      x1 = bn.x;
+      fly = this.gm.add.tween(bn);
+      fly.to({
+        x: [x1 + 200, x1 + 300],
+        y: [bn.y, y1],
+        angle: [90, 180]
+      }, 700, Phaser.Easing.Linear.None);
+      fly.onComplete.add(this.destroy_bonus0, this);
+      return fly;
+    };
+
+    Bonus.prototype.destroy_bonus0 = function() {
+      return this.bns.getAt(0).destroy();
+    };
+
+    return Bonus;
+
+  })();
+
+}).call(this);
+
+
 /*     ecrit par fc   le  2017-03-30 */
 
 (function() {
   Phacker.Game.Platform = (function() {
-    function Platform(gm, dgrO) {
+    function Platform(gm, dgrO, bnsO) {
       this.gm = gm;
       this.dgrO = dgrO;
+      this.bnsO = bnsO;
       this._fle_ = 'Platform';
       this.pm = this.gm.parameters.pfm = {};
       this.pm = {
@@ -167,7 +217,12 @@
         } else {
           nd = 0;
         }
-        results.push(this.make_one_pfm(this.pm.last_x + this.pm.w, this.pm.y0, nd));
+        this.make_one_pfm(this.pm.last_x + this.pm.w, this.pm.y0, nd);
+        if (i === 3) {
+          results.push(this.bnsO.make_bonus(this.pm.last_x + this.pm.w, this.pm.y0));
+        } else {
+          results.push(void 0);
+        }
       }
       return results;
     };
@@ -250,26 +305,34 @@
     }
 
     Sprite.prototype.collide_with_pfm = function() {
+      var ref;
       if ((this.pfmO.pm.y0 - this.spt.y) > this.pm.alt_max) {
         this.spt.body.velocity.y = 10;
         this.spt.body.velocity.x = this.pm.vx0;
         this.gm.parameters.btn.had_tapped = false;
         this.spt.y += 3;
       }
+      if ((0 < (ref = this.bnsO.bns.getAt(0).x - this.spt.x) && ref < 10)) {
+        this.bnsO.bns.getAt(0).fly.start();
+      }
       if (this.gm.physics.arcade.collide(this.spt, this.pfmO.pfm, function() {
         return true;
       }, function(spt, pfm) {
-        this.gm.parameters.btn.topCollidePfm = new Date().getTime();
-        this.spt.body.velocity.x = this.pm.vx0;
-        this.spt.animations.play('jmp');
-        return true;
+        return this.when_collide_with_pfm(spt, pfm);
       }, this)) {
         return this.pm.message;
       }
       return 'nothing';
     };
 
-    Sprite.prototype.when_collide_with_pfm = function(spt, pfm) {};
+    Sprite.prototype.when_collide_with_pfm = function(spt, pfm) {
+      this.gm.parameters.btn.topCollidePfm = new Date().getTime();
+      spt.body.velocity.x = this.pm.vx0;
+      spt.animations.play('jmp');
+      return true;
+    };
+
+    Sprite.prototype.collide_with_dgr = function() {};
 
     return Sprite;
 
@@ -301,35 +364,6 @@
     };
 
     return My_camera;
-
-  })();
-
-}).call(this);
-
-
-/* * Created by apch on 02/04/2017 * */
-
-(function() {
-  Phacker.Game.Bonus = (function() {
-    function Bonus(gm) {
-      this.gm = gm;
-      this._fle_ = 'Bonus';
-      this.pm = this.gm.parameters.bns = {
-        w: 35,
-        h: 47,
-        alt: 220
-      };
-      this.bns = this.gm.add.physicsGroup();
-      this.bns.enableBody = true;
-    }
-
-    Bonus.prototype.make_bonus = function() {
-      var bn;
-      bn = this.dgr.create(x, y, "bonus_sprite");
-      return bn.body.immovable = true;
-    };
-
-    return Bonus;
 
   })();
 
@@ -369,8 +403,8 @@
       this.game.world.setBounds(-1000, -1000, 300000, 2000);
       this.bgO = new Phacker.Game.Back_ground(this.game);
       this.dangerO = new Phacker.Game.Danger(this.game);
-      this.platformO = new Phacker.Game.Platform(this.game, this.dangerO);
       this.bonusO = new Phacker.Game.Bonus(this.game);
+      this.platformO = new Phacker.Game.Platform(this.game, this.dangerO, this.bonusO);
       this.spriteO = new Phacker.Game.Sprite(this.game, this.dangerO, this.platformO, this.bonusO);
       this.bgO.bind(this.spriteO, this.platformO);
       this.platformO.bind(this.spriteO);

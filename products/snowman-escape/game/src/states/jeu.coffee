@@ -31,12 +31,13 @@ class @YourGame extends Phacker.GameState
 
         @bgO = new Phacker.Game.Back_ground @game
         @dangerO = new Phacker.Game.Danger @game
-        @platformO = new Phacker.Game.Platform @game, @dangerO
-        @bonusO= new Phacker.Game.Bonus @game
+        @bonusO = new Phacker.Game.Bonus @game
+        @platformO = new Phacker.Game.Platform @game, @dangerO, @bonusO
+
 
         @spriteO = new Phacker.Game.Sprite @game, @dangerO, @platformO, @bonusO
         @bgO.bind @spriteO, @platformO
-        @platformO.bind @spriteO
+        @platformO.bind @spriteO #, bonusO
 
         @cameraO = new Phacker.Game.My_camera @game
 
