@@ -237,18 +237,21 @@
     };
 
     Platform.prototype.create_destroy = function() {
-      var pf0, x3, ynd;
+      var pf0, x3, y_nd_bn;
       pf0 = this.pfm.getAt(0);
       if (this.gm.camera.x > pf0.x + this.pm.w) {
         pf0.destroy();
-        ynd = this.game_rules();
+        y_nd_bn = this.game_rules();
         x3 = this.pfm.getAt(this.pfm.length - 1).x + this.pm.w;
-        return this.make_one_pfm(x3, ynd.y, ynd.nd);
+        this.make_one_pfm(x3, y_nd_bn.y, y_nd_bn.nd);
+        if (y_nd_bn.bn) {
+          return this.bnsO.make_bonus(this.pm.last_x + this.pm.w, this.pm.y0);
+        }
       }
     };
 
     Platform.prototype.game_rules = function() {
-      var lastP, nn, yy;
+      var bns, lastP, nn, yy;
       lastP = this.pfm.getAt(this.pfm.length - 1);
       if (lastP.n_danger > 0) {
         nn = 0;
@@ -256,9 +259,15 @@
         nn = this.gm.rnd.integerInRange(1, 3);
       }
       yy = lastP.y;
+      if (this.gm.rnd.integerInRange(0, 2) < 1) {
+        bns = true;
+      } else {
+        bns = false;
+      }
       return {
         y: yy,
-        nd: nn
+        nd: nn,
+        bn: bns
       };
     };
 

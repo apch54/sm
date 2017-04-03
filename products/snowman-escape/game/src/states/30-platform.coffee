@@ -54,10 +54,13 @@ class Phacker.Game.Platform
         #if @sptO.spt.x - @pm.w - 200  >=  pf0.x
         if  @gm.camera.x > pf0.x + @pm.w
             pf0.destroy()
-            ynd = @game_rules()
-            #console.log "- #{@_fle_} : ",ynd
+
+            y_nd_bn = @game_rules() # y_nd_bn = {y: ..., nd : nb of danger, bn: bonus yes or no}
+            #console.log "- #{@_fle_} : ",y_nd_bn
             x3 = @pfm.getAt(@pfm.length - 1).x  + @pm.w
-            @make_one_pfm(x3, ynd.y, ynd.nd)
+            @make_one_pfm(x3, y_nd_bn.y, y_nd_bn.nd)
+
+            if y_nd_bn.bn then @bnsO.make_bonus @pm.last_x + @pm.w, @pm.y0
 
     #----------.----------
     # game rules
@@ -68,7 +71,9 @@ class Phacker.Game.Platform
         else nn = @gm.rnd.integerInRange(1, 3)
 
         yy = lastP.y
-        return {y: yy, nd: nn}
+
+        if @gm.rnd.integerInRange(0, 2) < 1 then bns = yes else bns = no
+        return {y: yy, nd: nn, bn: bns}
 
     #----------.----------
     # bindd to spriteO
