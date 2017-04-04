@@ -2,7 +2,7 @@
 
 #             ___
 #           _[___]_  _       |---------------|
-#            ( " )  [_]   << | hi every body |
+#            (.. )  [_]   << | hi every body |
 #        '--(`~:~`)--|'      |---------------|
 #          / `-:-' \ |
 #     __.--\   :   /--.
@@ -13,7 +13,9 @@ class @YourGame extends Phacker.GameState
     update: ->
         super() #Required
 
-        @spriteO.collide_with_pfm()
+        @spriteO.collide_with_pfm() # bounce with platform
+        @spriteO.collide_with_dgr() # test coloision with danger
+
         @cameraO.move @spriteO.spt
         @bgO.create_destroy()
         @platformO.create_destroy()

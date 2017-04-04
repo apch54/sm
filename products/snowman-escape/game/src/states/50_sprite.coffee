@@ -13,7 +13,8 @@ class Phacker.Game.Sprite
             vx0: 115
             dvy: 500 # variation of vy when clicking on jump button
             g : 300
-            message: "nothing yet" # collide message
+            mess_pfm: "nothing yet" # collide message
+            mess_dgr: "no danger yet"
             has_collided : false
 
         @spt = @gm.add.sprite @pm.x0, @pm.y0  , 'character_sprite'  # 95 x 102
@@ -48,7 +49,7 @@ class Phacker.Game.Sprite
             -> return true
             (spt, pfm)-> @when_collide_with_pfm(spt, pfm)
             @
-        ) then return @pm.message
+        ) then return @pm.mess_pfm
         return 'nothing'
 
     when_collide_with_pfm:(spt, pfm) ->
@@ -62,3 +63,16 @@ class Phacker.Game.Sprite
     # collide with dangers : @dgr
     #.----------.----------
     collide_with_dgr:->
+
+        if @gm.physics.arcade.collide(
+            @spt, @dgrO.dgr
+            -> return true
+            (spt, dgr)-> @when_collide_with_dgr(spt, dgr)
+            @
+        ) then return @pm.mess_dgr
+        return 'nothing'
+
+    when_collide_with_dgr:(spt, dgr) ->
+        @pm.mess_dgr = 'loose'
+        return true
+

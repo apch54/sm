@@ -302,7 +302,8 @@
         vx0: 115,
         dvy: 500,
         g: 300,
-        message: "nothing yet",
+        mess_pfm: "nothing yet",
+        mess_dgr: "no danger yet",
         has_collided: false
       };
       this.spt = this.gm.add.sprite(this.pm.x0, this.pm.y0, 'character_sprite');
@@ -330,7 +331,7 @@
       }, function(spt, pfm) {
         return this.when_collide_with_pfm(spt, pfm);
       }, this)) {
-        return this.pm.message;
+        return this.pm.mess_pfm;
       }
       return 'nothing';
     };
@@ -342,7 +343,21 @@
       return true;
     };
 
-    Sprite.prototype.collide_with_dgr = function() {};
+    Sprite.prototype.collide_with_dgr = function() {
+      if (this.gm.physics.arcade.collide(this.spt, this.dgrO.dgr, function() {
+        return true;
+      }, function(spt, dgr) {
+        return this.when_collide_with_dgr(spt, dgr);
+      }, this)) {
+        return this.pm.mess_dgr;
+      }
+      return 'nothing';
+    };
+
+    Sprite.prototype.when_collide_with_dgr = function(spt, dgr) {
+      this.pm.mess_dgr = 'loose';
+      return true;
+    };
 
     return Sprite;
 
@@ -396,6 +411,7 @@
     YourGame.prototype.update = function() {
       YourGame.__super__.update.call(this);
       this.spriteO.collide_with_pfm();
+      this.spriteO.collide_with_dgr();
       this.cameraO.move(this.spriteO.spt);
       this.bgO.create_destroy();
       this.platformO.create_destroy();
