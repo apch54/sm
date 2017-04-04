@@ -147,7 +147,7 @@
       this.pm = this.gm.parameters.bns = {
         w: 35,
         h: 47,
-        alt: 200
+        alt: [195, 215, 235]
       };
       this.bns = this.gm.add.physicsGroup();
       this.bns.enableBody = true;
@@ -155,7 +155,7 @@
 
     Bonus.prototype.make_bonus = function(x, y) {
       var bn;
-      bn = this.gm.add.sprite(x, y - this.pm.alt, 'bonus_sprite');
+      bn = this.gm.add.sprite(x + 25, y - this.pm.alt[this.gm.rnd.integerInRange(0, 2)], 'bonus_sprite');
       this.bns.add(bn);
       return bn.fly = this.make_twn_fly(bn);
     };
@@ -376,7 +376,7 @@
       this.pm = this.gm.parameters.cam = {};
       this.pm = {
         offset: this.gm.gameOptions.fullscreen ? 60 : 100,
-        speed: 3
+        speed: 5
       };
     }
 

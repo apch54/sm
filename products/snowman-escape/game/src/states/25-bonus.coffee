@@ -16,16 +16,14 @@ class Phacker.Game.Bonus
        @pm = @gm.parameters.bns =
             w: 35
             h: 47
-            alt:  200 #@gm.parameters.spt.alt_max
+            alt:  [195,215,235] #@gm.parameters.spt.alt_max
 
        @bns = @gm.add.physicsGroup() # make bonus group
        @bns.enableBody = true
 
    make_bonus: (x,y) ->
         #bn = @bns.create x,y - @pm.alt, "bonus_sprite"
-        bn = @gm.add.sprite x, y - @pm.alt , 'bonus_sprite'  # 95 x 102
-
-
+        bn = @gm.add.sprite x + 25, y - @pm.alt[@gm.rnd.integerInRange(0,2)] , 'bonus_sprite'  # 95 x 102
 
         #@anim_bn = bn.animations.add 'spk', [0, 1], 5, true
         #bn.frame = 1
