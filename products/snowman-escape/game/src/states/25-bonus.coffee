@@ -16,7 +16,7 @@ class Phacker.Game.Bonus
        @pm = @gm.parameters.bns =
             w: 35
             h: 47
-            alt:  [195,215,235] #@gm.parameters.spt.alt_max
+            alt:  [190,215,250] #@gm.parameters.spt.alt_max
 
        @bns = @gm.add.physicsGroup() # make bonus group
        @bns.enableBody = true

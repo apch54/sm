@@ -147,7 +147,7 @@
       this.pm = this.gm.parameters.bns = {
         w: 35,
         h: 47,
-        alt: [195, 215, 235]
+        alt: [190, 215, 250]
       };
       this.bns = this.gm.add.physicsGroup();
       this.bns.enableBody = true;
@@ -304,7 +304,8 @@
         g: 300,
         mess_pfm: "nothing yet",
         mess_dgr: "no danger yet",
-        has_collided: false
+        has_collided: false,
+        has_bonus: false
       };
       this.spt = this.gm.add.sprite(this.pm.x0, this.pm.y0, 'character_sprite');
       this.gm.physics.arcade.enable(this.spt, Phaser.Physics.ARCADE);
@@ -312,7 +313,7 @@
       this.spt.body.bounce.y = 1.2;
       this.spt.body.gravity.y = this.pm.g;
       this.spt.body.velocity.x = this.pm.vx0;
-      this.anim_spt = this.spt.animations.add('jmp', [0, 1, 2, 1, 3], 8, false);
+      this.anim_spt = this.spt.animations.add('jmp', [0, 1, 2, 1, 3, 0], 15, false);
     }
 
     Sprite.prototype.collide_with_pfm = function() {
@@ -324,10 +325,16 @@
         this.spt.y += 3;
       }
       bn0 = this.bnsO.bns.getAt(0);
-      if ((0 < (ref = bn0.x - this.spt.x) && ref < 10)) {
+      if ((0 < (ref = bn0.x - this.spt.x) && ref < 30)) {
         bn0.fly.start();
-        if (this.spt.y - bn0.y < this.pm.h) {
-          return 'bonus';
+        if (this.spt.y - bn0.y < this.bnsO.pm.h) {
+          if (!this.pm.has_bonus) {
+            this.pm.has_bonus = true;
+            return 'bonus';
+          } else {
+            this.pm.has_bonus = true;
+            return 'no bonus';
+          }
         }
       }
       if (this.gm.physics.arcade.collide(this.spt, this.pfmO.pfm, function() {
@@ -342,6 +349,7 @@
 
     Sprite.prototype.when_collide_with_pfm = function(spt, pfm) {
       this.gm.parameters.btn.topCollidePfm = new Date().getTime();
+      this.pm.has_bonus = false;
       spt.body.velocity.x = this.pm.vx0;
       spt.animations.play('jmp');
       return true;

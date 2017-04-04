@@ -16,6 +16,7 @@ class Phacker.Game.Sprite
             mess_pfm: "nothing yet" # collide message
             mess_dgr: "no danger yet"
             has_collided : false
+            has_bonus : false
 
         @spt = @gm.add.sprite @pm.x0, @pm.y0  , 'character_sprite'  # 95 x 102
         @gm.physics.arcade.enable @spt,Phaser.Physics.ARCADE
@@ -24,7 +25,7 @@ class Phacker.Game.Sprite
         @spt.body.gravity.y = @pm.g
         @spt.body.velocity.x = @pm.vx0
 
-        @anim_spt = @spt.animations.add 'jmp', [0, 1, 2, 1, 3], 8, false
+        @anim_spt = @spt.animations.add 'jmp', [0, 1, 2, 1, 3, 0, ], 15, false
         #@spt.animations.play('jmp')
 
 
@@ -41,10 +42,16 @@ class Phacker.Game.Sprite
 
         #console.log "- #{@_fle_} : ",@bnsO.bns.getAt(0).x
         bn0 =  @bnsO.bns.getAt(0)
-        if 0 < bn0.x - @spt.x < 10
+        if 0 < bn0.x - @spt.x < 30
             bn0.fly.start()
-            if @spt.y - bn0.y < @pm.h
-                return 'bonus'
+            if @spt.y - bn0.y < @bnsO.pm.h
+                if not @pm.has_bonus
+                    @pm.has_bonus = true;
+                    return 'bonus'
+                else
+                    @pm.has_bonus = true;
+                    return 'no bonus'
+
 
         if @gm.physics.arcade.collide(
             @spt, @pfmO.pfm
@@ -57,6 +64,7 @@ class Phacker.Game.Sprite
     when_collide_with_pfm:(spt, pfm) ->
         #console.log "- #{@_fle_} :", pfm.key
         @gm.parameters.btn.topCollidePfm = new Date().getTime()
+        @pm.has_bonus = false
         spt.body.velocity.x = @pm.vx0
         spt.animations.play 'jmp'
         return true
