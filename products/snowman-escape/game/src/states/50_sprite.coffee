@@ -40,9 +40,11 @@ class Phacker.Game.Sprite
             @spt.y += 3
 
         #console.log "- #{@_fle_} : ",@bnsO.bns.getAt(0).x
-        if 0 < @bnsO.bns.getAt(0).x - @spt.x < 10
-            @bnsO.bns.getAt(0).fly.start()
-            #@bnsO.bns.getAt(0).destroy()
+        bn0 =  @bnsO.bns.getAt(0)
+        if 0 < bn0.x - @spt.x < 10
+            bn0.fly.start()
+            if @spt.y - bn0.y < @pm.h
+                return 'bonus'
 
         if @gm.physics.arcade.collide(
             @spt, @pfmO.pfm

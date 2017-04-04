@@ -12,8 +12,12 @@ class @YourGame extends Phacker.GameState
 
     update: ->
         super() #Required
+        @_fle_ = 'jeu Update'
 
-        @spriteO.collide_with_pfm() # bounce with platform
+        # bounce with platform & chech bonus
+        if (resp1 = @spriteO.collide_with_pfm()) is 'bonus'
+            console.log "- #{@_fle_} : ",'bonus'
+
         @spriteO.collide_with_dgr() # test coloision with danger
 
         @cameraO.move @spriteO.spt

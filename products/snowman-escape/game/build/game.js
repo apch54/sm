@@ -316,15 +316,19 @@
     }
 
     Sprite.prototype.collide_with_pfm = function() {
-      var ref;
+      var bn0, ref;
       if ((this.pfmO.pm.y0 - this.spt.y) > this.pm.alt_max) {
         this.spt.body.velocity.y = 10;
         this.spt.body.velocity.x = this.pm.vx0;
         this.gm.parameters.btn.had_tapped = false;
         this.spt.y += 3;
       }
-      if ((0 < (ref = this.bnsO.bns.getAt(0).x - this.spt.x) && ref < 10)) {
-        this.bnsO.bns.getAt(0).fly.start();
+      bn0 = this.bnsO.bns.getAt(0);
+      if ((0 < (ref = bn0.x - this.spt.x) && ref < 10)) {
+        bn0.fly.start();
+        if (this.spt.y - bn0.y < this.pm.h) {
+          return 'bonus';
+        }
       }
       if (this.gm.physics.arcade.collide(this.spt, this.pfmO.pfm, function() {
         return true;
@@ -409,8 +413,12 @@
     }
 
     YourGame.prototype.update = function() {
+      var resp1;
       YourGame.__super__.update.call(this);
-      this.spriteO.collide_with_pfm();
+      this._fle_ = 'jeu Update';
+      if ((resp1 = this.spriteO.collide_with_pfm()) === 'bonus') {
+        console.log("- " + this._fle_ + " : ", 'bonus');
+      }
       this.spriteO.collide_with_dgr();
       this.cameraO.move(this.spriteO.spt);
       this.bgO.create_destroy();
