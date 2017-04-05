@@ -15,8 +15,11 @@ class @YourGame extends Phacker.GameState
         @_fle_ = 'jeu Update'
 
         # bounce with platform & chech bonus
-        if (resp1 = @spriteO.collide_with_pfm()) is 'bonus'
+        if (resp1 = @spriteO.check_bonus()) is 'bonus'
             console.log "- #{@_fle_} : ",'bonus'
+
+        if (resp1 = @spriteO.collide_with_pfm()) is 'win'
+            console.log "- #{@_fle_} : ",'win'
 
         @spriteO.collide_with_dgr() # test coloision with danger
 

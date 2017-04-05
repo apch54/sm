@@ -40,19 +40,6 @@ class Phacker.Game.Sprite
             @gm.parameters.btn.had_tapped = false
             @spt.y += 3
 
-        #console.log "- #{@_fle_} : ",@bnsO.bns.getAt(0).x
-        bn0 =  @bnsO.bns.getAt(0)
-        if 0 < bn0.x - @spt.x < 30
-            bn0.fly.start()
-            if @spt.y - bn0.y < @bnsO.pm.h
-                if not @pm.has_bonus
-                    @pm.has_bonus = true;
-                    return 'bonus'
-                else
-                    @pm.has_bonus = true;
-                    return 'no bonus'
-
-
         if @gm.physics.arcade.collide(
             @spt, @pfmO.pfm
             -> return true
@@ -67,6 +54,7 @@ class Phacker.Game.Sprite
         @pm.has_bonus = false
         spt.body.velocity.x = @pm.vx0
         spt.animations.play 'jmp'
+        @pm.mess_pfm = 'win'
         return true
 
     #.----------.----------
@@ -85,4 +73,21 @@ class Phacker.Game.Sprite
     when_collide_with_dgr:(spt, dgr) ->
         @pm.mess_dgr = 'loose'
         return true
+
+    #----------.----------
+    # check sprite overlaping bonus
+    #----------.----------
+    check_bonus: () ->
+
+        #console.log "- #{@_fle_} : ",@bnsO.bns.getAt(0).x
+        bn0 =  @bnsO.bns.getAt(0)
+        if 0 < bn0.x - @spt.x < 30
+            bn0.fly.start()
+            if @spt.y - bn0.y < @bnsO.pm.h
+                if not @pm.has_bonus
+                    @pm.has_bonus = true;
+                    return 'bonus'
+                else
+                    @pm.has_bonus = true;
+                    return 'no bonus'
 

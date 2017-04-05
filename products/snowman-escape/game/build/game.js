@@ -317,25 +317,11 @@
     }
 
     Sprite.prototype.collide_with_pfm = function() {
-      var bn0, ref;
       if ((this.pfmO.pm.y0 - this.spt.y) > this.pm.alt_max) {
         this.spt.body.velocity.y = 10;
         this.spt.body.velocity.x = this.pm.vx0;
         this.gm.parameters.btn.had_tapped = false;
         this.spt.y += 3;
-      }
-      bn0 = this.bnsO.bns.getAt(0);
-      if ((0 < (ref = bn0.x - this.spt.x) && ref < 30)) {
-        bn0.fly.start();
-        if (this.spt.y - bn0.y < this.bnsO.pm.h) {
-          if (!this.pm.has_bonus) {
-            this.pm.has_bonus = true;
-            return 'bonus';
-          } else {
-            this.pm.has_bonus = true;
-            return 'no bonus';
-          }
-        }
       }
       if (this.gm.physics.arcade.collide(this.spt, this.pfmO.pfm, function() {
         return true;
@@ -352,6 +338,7 @@
       this.pm.has_bonus = false;
       spt.body.velocity.x = this.pm.vx0;
       spt.animations.play('jmp');
+      this.pm.mess_pfm = 'win';
       return true;
     };
 
@@ -369,6 +356,23 @@
     Sprite.prototype.when_collide_with_dgr = function(spt, dgr) {
       this.pm.mess_dgr = 'loose';
       return true;
+    };
+
+    Sprite.prototype.check_bonus = function() {
+      var bn0, ref;
+      bn0 = this.bnsO.bns.getAt(0);
+      if ((0 < (ref = bn0.x - this.spt.x) && ref < 30)) {
+        bn0.fly.start();
+        if (this.spt.y - bn0.y < this.bnsO.pm.h) {
+          if (!this.pm.has_bonus) {
+            this.pm.has_bonus = true;
+            return 'bonus';
+          } else {
+            this.pm.has_bonus = true;
+            return 'no bonus';
+          }
+        }
+      }
     };
 
     return Sprite;
@@ -424,8 +428,11 @@
       var resp1;
       YourGame.__super__.update.call(this);
       this._fle_ = 'jeu Update';
-      if ((resp1 = this.spriteO.collide_with_pfm()) === 'bonus') {
+      if ((resp1 = this.spriteO.check_bonus()) === 'bonus') {
         console.log("- " + this._fle_ + " : ", 'bonus');
+      }
+      if ((resp1 = this.spriteO.collide_with_pfm()) === 'win') {
+        console.log("- " + this._fle_ + " : ", 'win');
       }
       this.spriteO.collide_with_dgr();
       this.cameraO.move(this.spriteO.spt);
