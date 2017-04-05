@@ -57,9 +57,9 @@ class Phacker.Game.Sprite
         spt.body.velocity.x = @pm.vx0
         spt.animations.play 'jmp'
 
+        # sprite cannot mark twice or more on the same platform
         if not pfm.touched_once  then @pm.mess_pfm = 'win'
         else  @pm.mess_pfm = 'touched once'
-        #console.log "- #{@_fle_} : ---",@pm.mess_pfm
         pfm.touched_once = true
         return true
 
@@ -82,7 +82,7 @@ class Phacker.Game.Sprite
             @pm.mess_dgr = 'had loose yet'
             return
 
-        console.log "- #{@_fle_} : ",'in loose'
+        #console.log "- #{@_fle_} : ",'in loose'
         @pm.mess_dgr = 'loose'
         @pm.has_collided_dgr= true
         return true

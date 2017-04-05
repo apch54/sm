@@ -19,11 +19,10 @@ class @YourGame extends Phacker.GameState
             foo = 0
             #console.log "- #{@_fle_} : ",'bonus'
 
-        if (resp2 = @spriteO.collide_with_pfm())  is 'win'
-            @win()
+        if @spriteO.collide_with_pfm()  is  'win' then   @win()
 
         if (resp3 = @spriteO.collide_with_dgr() is 'loose') # test coloision with danger
-            console.log "- #{@_fle_} : ",'loose'
+            foo ='loose' #console.log "- #{@_fle_} : ",'loose'
 
         @cameraO.move @spriteO.spt
         @bgO.create_destroy()

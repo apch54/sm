@@ -100,23 +100,25 @@
         h: 38,
         proba: 50,
         n: 1,
-        dy: 24,
-        dx: 10,
-        scaleX: .7
+        dy: 19,
+        dx: [10, 20, 30],
+        scaleX: .5,
+        scaleY: .7
       };
-      this.pm.w = this.pm.w * this.pm.scaleX - 5;
+      this.pm.w = this.pm.w * this.pm.scaleX - 3;
       this.dgr = this.gm.add.physicsGroup();
       this.dgr.enableBody = true;
     }
 
     Danger.prototype.make_danger = function(x, y, nd) {
-      var d, i;
+      var d, ddx, i;
       i = 0;
+      ddx = this.pm.dx[this.gm.rnd.integerInRange(0, 2)];
       while (nd > i++) {
-        d = this.dgr.create(x, y, "danger");
+        d = this.dgr.create(x + ddx, y, "danger");
         d.body.immovable = true;
-        d.scale.setTo(this.pm.scaleX, 1);
         d.body.setSize(16, 38, 9, 0);
+        d.scale.setTo(this.pm.scaleX, this.pm.scaleY);
         x += this.pm.w;
       }
       return this.gm.world.bringToTop(this.dgr);
@@ -230,7 +232,7 @@
 
     Platform.prototype.make_one_pfm = function(x, y, nd) {
       var p;
-      this.dgrO.make_danger(x + this.dgrO.pm.dx, y - this.dgrO.pm.dy, nd);
+      this.dgrO.make_danger(x, y - this.dgrO.pm.dy, nd);
       p = this.pfm.create(x, y, "platform");
       p.n_danger = nd;
       this.pm.last_x = p.x;
@@ -365,7 +367,6 @@
         this.pm.mess_dgr = 'had loose yet';
         return;
       }
-      console.log("- " + this._fle_ + " : ", 'in loose');
       this.pm.mess_dgr = 'loose';
       this.pm.has_collided_dgr = true;
       return true;
@@ -438,17 +439,17 @@
     }
 
     YourGame.prototype.update = function() {
-      var foo, resp1, resp2, resp3;
+      var foo, resp1, resp3;
       YourGame.__super__.update.call(this);
       this._fle_ = 'jeu Update';
       if ((resp1 = this.spriteO.check_bonus()) === 'bonus') {
         foo = 0;
       }
-      if ((resp2 = this.spriteO.collide_with_pfm()) === 'win') {
+      if (this.spriteO.collide_with_pfm() === 'win') {
         this.win();
       }
       if ((resp3 = this.spriteO.collide_with_dgr() === 'loose')) {
-        console.log("- " + this._fle_ + " : ", 'loose');
+        foo = 'loose';
       }
       this.cameraO.move(this.spriteO.spt);
       this.bgO.create_destroy();

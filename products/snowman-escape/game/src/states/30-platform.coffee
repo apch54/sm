@@ -37,7 +37,7 @@ class Phacker.Game.Platform
     #.----------.----------
 
     make_one_pfm: (x,y,nd) -> # nd stands for danger nb
-        @dgrO.make_danger(x + @dgrO.pm.dx, y - @dgrO.pm.dy, nd)
+        @dgrO.make_danger(x , y - @dgrO.pm.dy, nd)
 
         p =   @pfm.create x, y, "platform"
         p.n_danger = nd

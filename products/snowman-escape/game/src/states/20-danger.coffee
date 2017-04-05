@@ -10,12 +10,13 @@ class Phacker.Game.Danger
             h: 38
             proba : 50 # 50%
             n: 1 # nuber max of danger on each platform
-            dy: 24  # relative danger obj location against platform
-            dx: 10 # offset  danger.x against platform.x
-            scaleX: .7
-        @pm.w = @pm.w * @pm.scaleX - 5
+            dy: 19  # relative danger obj location against platform
+            dx: [10, 20, 30] # offset  danger.x against platform.x
+            scaleX: .5
+            scaleY: .7
+        @pm.w = @pm.w * @pm.scaleX - 3
 
-        @dgr = @gm.add.physicsGroup() # make ganger group
+        @dgr = @gm.add.physicsGroup() # make danger group
         @dgr.enableBody = true
 
     #.----------.----------
@@ -25,11 +26,14 @@ class Phacker.Game.Danger
     make_danger:(x,y,nd)-> # nd is nb danger
 
          i = 0
+         ddx=@pm.dx[@gm.rnd.integerInRange(0,2)]
+
          while nd > i++
-            d = @dgr.create x, y, "danger"
+            d = @dgr.create x + ddx, y, "danger"
             d.body.immovable = true
-            d.scale.setTo @pm.scaleX, 1
             d.body.setSize(16, 38, 9, 0) # w, h, offset x, offset y
+            d.scale.setTo @pm.scaleX, @pm.scaleY
+
             x += @pm.w
 
          @gm.world.bringToTop @dgr
