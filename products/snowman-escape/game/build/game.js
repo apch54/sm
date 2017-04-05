@@ -234,7 +234,8 @@
       p = this.pfm.create(x, y, "platform");
       p.n_danger = nd;
       this.pm.last_x = p.x;
-      return p.body.immovable = true;
+      p.body.immovable = true;
+      return p.touched_once = false;
     };
 
     Platform.prototype.create_destroy = function() {
@@ -305,6 +306,7 @@
         mess_pfm: "nothing yet",
         mess_dgr: "no danger yet",
         has_collided: false,
+        has_collided_dgr: false,
         has_bonus: false
       };
       this.spt = this.gm.add.sprite(this.pm.x0, this.pm.y0, 'character_sprite');
@@ -338,7 +340,12 @@
       this.pm.has_bonus = false;
       spt.body.velocity.x = this.pm.vx0;
       spt.animations.play('jmp');
-      this.pm.mess_pfm = 'win';
+      if (!pfm.touched_once) {
+        this.pm.mess_pfm = 'win';
+      } else {
+        this.pm.mess_pfm = 'touched once';
+      }
+      pfm.touched_once = true;
       return true;
     };
 
@@ -354,7 +361,13 @@
     };
 
     Sprite.prototype.when_collide_with_dgr = function(spt, dgr) {
+      if (this.pm.has_collided_dgr) {
+        this.pm.mess_dgr = 'had loose yet';
+        return;
+      }
+      console.log("- " + this._fle_ + " : ", 'in loose');
       this.pm.mess_dgr = 'loose';
+      this.pm.has_collided_dgr = true;
       return true;
     };
 
@@ -425,16 +438,18 @@
     }
 
     YourGame.prototype.update = function() {
-      var resp1;
+      var foo, resp1, resp2, resp3;
       YourGame.__super__.update.call(this);
       this._fle_ = 'jeu Update';
       if ((resp1 = this.spriteO.check_bonus()) === 'bonus') {
-        console.log("- " + this._fle_ + " : ", 'bonus');
+        foo = 0;
       }
-      if ((resp1 = this.spriteO.collide_with_pfm()) === 'win') {
-        console.log("- " + this._fle_ + " : ", 'win');
+      if ((resp2 = this.spriteO.collide_with_pfm()) === 'win') {
+        this.win();
       }
-      this.spriteO.collide_with_dgr();
+      if ((resp3 = this.spriteO.collide_with_dgr() === 'loose')) {
+        console.log("- " + this._fle_ + " : ", 'loose');
+      }
       this.cameraO.move(this.spriteO.spt);
       this.bgO.create_destroy();
       this.platformO.create_destroy();

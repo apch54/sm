@@ -16,6 +16,7 @@ class Phacker.Game.Sprite
             mess_pfm: "nothing yet" # collide message
             mess_dgr: "no danger yet"
             has_collided : false
+            has_collided_dgr : false
             has_bonus : false
 
         @spt = @gm.add.sprite @pm.x0, @pm.y0  , 'character_sprite'  # 95 x 102
@@ -34,6 +35,7 @@ class Phacker.Game.Sprite
     #.----------.----------
     collide_with_pfm: () ->
 
+        # is sprite over alt max ?
         if (@pfmO.pm.y0 - @spt.y) > @pm.alt_max
             @spt.body.velocity.y = 10
             @spt.body.velocity.x = @pm.vx0
@@ -54,7 +56,11 @@ class Phacker.Game.Sprite
         @pm.has_bonus = false
         spt.body.velocity.x = @pm.vx0
         spt.animations.play 'jmp'
-        @pm.mess_pfm = 'win'
+
+        if not pfm.touched_once  then @pm.mess_pfm = 'win'
+        else  @pm.mess_pfm = 'touched once'
+        #console.log "- #{@_fle_} : ---",@pm.mess_pfm
+        pfm.touched_once = true
         return true
 
     #.----------.----------
@@ -71,7 +77,14 @@ class Phacker.Game.Sprite
         return 'nothing'
 
     when_collide_with_dgr:(spt, dgr) ->
+
+        if @pm.has_collided_dgr
+            @pm.mess_dgr = 'had loose yet'
+            return
+
+        console.log "- #{@_fle_} : ",'in loose'
         @pm.mess_dgr = 'loose'
+        @pm.has_collided_dgr= true
         return true
 
     #----------.----------

@@ -43,6 +43,7 @@ class Phacker.Game.Platform
         p.n_danger = nd
         @pm.last_x = p.x
         p.body.immovable = true
+        p.touched_once = false
 
     #----------.----------
     # create_destroy platforms
