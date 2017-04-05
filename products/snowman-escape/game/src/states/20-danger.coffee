@@ -41,8 +41,22 @@ class Phacker.Game.Danger
     #----------.----------
     # create_destroy danger pines
     #----------.----------
-    destroy: (spt) ->
+    destroy: () ->
         dg0 = @dgr.getAt(0)
         #if spt.x - @pm.w - 200>=  dg0.x  then dg0.destroy()
         if @gm.camera.x >dg0.x + @pm.w then dg0.destroy
+
+    #----------.----------
+    # destroy all danger pines on the same platform
+    # from spt.x to spt.x + wx
+    #----------.----------
+
+    destroy_dgr_to:(spt, wx)->
+
+        for i in  [1..@dgr.length]
+            dg = @dgr.getAt(0)
+            if dg.x < spt.x + wx then dg.destroy()
+            else return
+
+
 

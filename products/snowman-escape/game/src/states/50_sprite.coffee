@@ -7,7 +7,7 @@ class Phacker.Game.Sprite
         @pm = @gm.parameters.spt =
             x0: 50
             y0: @pfmO.pm.y0 - 200
-            alt_max: 200 # max altitude sprite can reach
+            alt_max: 150 # max altitude sprite can reach
             w: 98  # width of the sprite
             h: 105 # height of the sprite
             vx0: 115
@@ -50,6 +50,8 @@ class Phacker.Game.Sprite
         ) then return @pm.mess_pfm
         return 'nothing'
 
+    #.----------.----------
+
     when_collide_with_pfm:(spt, pfm) ->
         #console.log "- #{@_fle_} :", pfm.key
         @gm.parameters.btn.topCollidePfm = new Date().getTime()
@@ -68,6 +70,7 @@ class Phacker.Game.Sprite
     #.----------.----------
     collide_with_dgr:->
 
+        #console.log "- #{@_fle_} : ", @pm.has_collided_dgr
         if @gm.physics.arcade.collide(
             @spt, @dgrO.dgr
             -> return true
@@ -75,6 +78,8 @@ class Phacker.Game.Sprite
             @
         ) then return @pm.mess_dgr
         return 'nothing'
+
+    #.----------.----------
 
     when_collide_with_dgr:(spt, dgr) ->
 
@@ -84,7 +89,9 @@ class Phacker.Game.Sprite
 
         #console.log "- #{@_fle_} : ",'in loose'
         @pm.mess_dgr = 'loose'
-        @pm.has_collided_dgr= true
+        @pm.has_collided_dgr = true
+        @twn_spt_collide()
+        #spt.alpha = 0
         return true
 
     #----------.----------
@@ -103,4 +110,26 @@ class Phacker.Game.Sprite
                 else
                     @pm.has_bonus = true;
                     return 'no bonus'
+
+    #----------.----------
+    # tween effect when collide
+    #----------.----------
+
+    twn_spt_collide:()->
+        @spt.body.velocity.y = -10
+        @spt.body.velocity.x =  0
+
+        @spt.anchor.setTo( .5,.5)
+        twn_collide = @gm.add.tween (@spt)
+        twn_collide.to(
+            { alpha : 0 , angle : 360, y: @spt.y - 100}
+            1500, Phaser.Easing.Linear.None
+        )
+        twn_collide.onComplete.addOnce(
+            ->
+                @spt.body.velocity.y = -10
+                @spt.body.velocity.x =  0
+            @
+        )
+        twn_collide.start()
 

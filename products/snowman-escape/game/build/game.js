@@ -124,11 +124,23 @@
       return this.gm.world.bringToTop(this.dgr);
     };
 
-    Danger.prototype.destroy = function(spt) {
+    Danger.prototype.destroy = function() {
       var dg0;
       dg0 = this.dgr.getAt(0);
       if (this.gm.camera.x > dg0.x + this.pm.w) {
         return dg0.destroy;
+      }
+    };
+
+    Danger.prototype.destroy_dgr_to = function(spt, wx) {
+      var dg, i, j, ref;
+      for (i = j = 1, ref = this.dgr.length; 1 <= ref ? j <= ref : j >= ref; i = 1 <= ref ? ++j : --j) {
+        dg = this.dgr.getAt(0);
+        if (dg.x < spt.x + wx) {
+          dg.destroy();
+        } else {
+          return;
+        }
       }
     };
 
@@ -215,7 +227,7 @@
       this.make_one_pfm(this.pm.x0, this.pm.y0, 0);
       results = [];
       for (i = j = 1, ref = this.pm.n - 1; 1 <= ref ? j <= ref : j >= ref; i = 1 <= ref ? ++j : --j) {
-        if (i === 2 || i === 5) {
+        if (i === 3 || i === 5) {
           nd = 1;
         } else {
           nd = 0;
@@ -299,7 +311,7 @@
       this.pm = this.gm.parameters.spt = {
         x0: 50,
         y0: this.pfmO.pm.y0 - 200,
-        alt_max: 200,
+        alt_max: 150,
         w: 98,
         h: 105,
         vx0: 115,
@@ -369,6 +381,7 @@
       }
       this.pm.mess_dgr = 'loose';
       this.pm.has_collided_dgr = true;
+      this.twn_spt_collide();
       return true;
     };
 
@@ -387,6 +400,24 @@
           }
         }
       }
+    };
+
+    Sprite.prototype.twn_spt_collide = function() {
+      var twn_collide;
+      this.spt.body.velocity.y = -10;
+      this.spt.body.velocity.x = 0;
+      this.spt.anchor.setTo(.5, .5);
+      twn_collide = this.gm.add.tween(this.spt);
+      twn_collide.to({
+        alpha: 0,
+        angle: 360,
+        y: this.spt.y - 100
+      }, 1500, Phaser.Easing.Linear.None);
+      twn_collide.onComplete.addOnce(function() {
+        this.spt.body.velocity.y = -10;
+        return this.spt.body.velocity.x = 0;
+      }, this);
+      return twn_collide.start();
     };
 
     return Sprite;
@@ -448,8 +479,9 @@
       if (this.spriteO.collide_with_pfm() === 'win') {
         this.win();
       }
-      if ((resp3 = this.spriteO.collide_with_dgr() === 'loose')) {
-        foo = 'loose';
+      resp3 = this.spriteO.collide_with_dgr();
+      if (resp3 === 'loose') {
+        this.lostLife();
       }
       this.cameraO.move(this.spriteO.spt);
       this.bgO.create_destroy();
@@ -458,11 +490,13 @@
     };
 
     YourGame.prototype.resetPlayer = function() {
-      return console.log("Reset the player");
+      this.spriteO.pm.has_collided_dgr = false;
+      this.spriteO.spt.alpha = true;
+      return this.dangerO.destroy_dgr_to(this.spriteO.spt, 200);
     };
 
     YourGame.prototype.create = function() {
-      var bonusBtn, lostBtn, lostLifeBtn, winBtn;
+      var bonusBtn, lostBtn;
       YourGame.__super__.create.call(this);
       this.game.physics.startSystem(Phaser.Physics.ARCADE);
       this.game.world.setBounds(-1000, -1000, 300000, 2000);
@@ -479,20 +513,6 @@
       lostBtn.y = this.game.height * 0.5 - lostBtn.height * 0.5;
       lostBtn.events.onInputDown.add((function() {
         return this.lost();
-      }).bind(this));
-      winBtn = this.game.add.text(0, 0, "Good Action");
-      winBtn.inputEnabled = true;
-      winBtn.y = this.game.height * 0.5 - winBtn.height * 0.5;
-      winBtn.x = this.game.width - winBtn.width;
-      winBtn.events.onInputDown.add((function() {
-        return this.win();
-      }).bind(this));
-      lostLifeBtn = this.game.add.text(0, 0, "Lost Life");
-      lostLifeBtn.inputEnabled = true;
-      lostLifeBtn.y = this.game.height * 0.5 - lostLifeBtn.height * 0.5;
-      lostLifeBtn.x = this.game.width * 0.5 - lostLifeBtn.width * 0.5;
-      lostLifeBtn.events.onInputDown.add((function() {
-        return this.lostLife();
       }).bind(this));
       bonusBtn = this.game.add.text(0, 0, "Bonus");
       bonusBtn.inputEnabled = true;

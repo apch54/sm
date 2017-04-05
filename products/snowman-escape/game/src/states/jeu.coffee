@@ -21,8 +21,11 @@ class @YourGame extends Phacker.GameState
 
         if @spriteO.collide_with_pfm()  is  'win' then   @win()
 
-        if (resp3 = @spriteO.collide_with_dgr() is 'loose') # test coloision with danger
-            foo ='loose' #console.log "- #{@_fle_} : ",'loose'
+        resp3 = @spriteO.collide_with_dgr()
+        #console.log "- #{@_fle_} : ",resp3
+        if resp3 is 'loose' # test colision with danger
+           @lostLife()  #console.log "- #{@_fle_} : ",'loose'
+
 
         @cameraO.move @spriteO.spt
         @bgO.create_destroy()
@@ -31,7 +34,14 @@ class @YourGame extends Phacker.GameState
 
 
     resetPlayer: ->
-        console.log "Reset the player"
+
+        @spriteO.pm.has_collided_dgr = false
+        #@spriteO.spt.y -= 100
+        @spriteO.spt.alpha  = true
+        # destroy danger from spt.x to spt.x + wx
+        @dangerO.destroy_dgr_to @spriteO.spt, 200
+
+
 
     create: ->
         super() #Required
@@ -62,21 +72,6 @@ class @YourGame extends Phacker.GameState
           @lost()
         ).bind @
 
-        winBtn = @game.add.text(0, 0, "Good Action");
-        winBtn.inputEnabled = true;
-        winBtn.y = @game.height * 0.5 - winBtn.height * 0.5
-        winBtn.x = @game.width - winBtn.width
-        winBtn.events.onInputDown.add ( ->
-          @win()
-        ).bind @
-
-        lostLifeBtn = @game.add.text(0, 0, "Lost Life");
-        lostLifeBtn.inputEnabled = true;
-        lostLifeBtn.y = @game.height * 0.5 - lostLifeBtn.height * 0.5
-        lostLifeBtn.x = @game.width * 0.5 - lostLifeBtn.width * 0.5
-        lostLifeBtn.events.onInputDown.add ( ->
-          @lostLife()
-        ).bind @
 
         bonusBtn = @game.add.text(0, 0, "Bonus");
         bonusBtn.inputEnabled = true;
