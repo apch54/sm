@@ -117,11 +117,13 @@ class Phacker.Game.Sprite
                     return 'no bonus'
         ###
         if @bnsO.bns.length < 1 then return
+        if @pm.has_bonus then return
         bn0 =  @bnsO.bns.getAt(0)
 
         bn0_bounds = bn0.getBounds()
         spt_bounds = @spt.getBounds()
         if Phaser.Rectangle.intersects(bn0_bounds, spt_bounds)
+            @pm.has_bonus = true
             bn0.fly.start()
             return 'bonus'
     #----------.----------

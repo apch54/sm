@@ -151,7 +151,7 @@
 }).call(this);
 
 
-/* * Created by apch on 02/04/2017 * */
+/* Written by apch on 02/04/2017 */
 
 (function() {
   Phacker.Game.Bonus = (function() {
@@ -161,7 +161,7 @@
       this.pm = this.gm.parameters.bns = {
         w: 35,
         h: 47,
-        alt: [150, 150, 150]
+        alt: [220, 250, 280]
       };
       this.bns = this.gm.add.physicsGroup();
       this.bns.enableBody = true;
@@ -172,6 +172,18 @@
       bn = this.gm.add.sprite(x + 25, y - this.pm.alt[this.gm.rnd.integerInRange(0, 2)], 'bonus_sprite');
       this.bns.add(bn);
       return bn.fly = this.make_twn_fly(bn);
+    };
+
+    Bonus.prototype.destroy_to = function(spt, wx) {
+      var bn, i, j, ref;
+      for (i = j = 1, ref = this.bns.length; 1 <= ref ? j <= ref : j >= ref; i = 1 <= ref ? ++j : --j) {
+        bn = this.bns.getAt(0);
+        if (bn.x < spt.x + wx) {
+          bn.destroy();
+        } else {
+          return;
+        }
+      }
     };
 
     Bonus.prototype.make_twn_fly = function(bn) {
@@ -275,7 +287,7 @@
         nn = this.gm.rnd.integerInRange(1, 3);
       }
       yy = lastP.y;
-      if (this.gm.rnd.integerInRange(0, 2) < 1) {
+      if (this.gm.rnd.integerInRange(0, 3) < 1) {
         bns = true;
       } else {
         bns = false;
@@ -405,10 +417,14 @@
       if (this.bnsO.bns.length < 1) {
         return;
       }
+      if (this.pm.has_bonus) {
+        return;
+      }
       bn0 = this.bnsO.bns.getAt(0);
       bn0_bounds = bn0.getBounds();
       spt_bounds = this.spt.getBounds();
       if (Phaser.Rectangle.intersects(bn0_bounds, spt_bounds)) {
+        this.pm.has_bonus = true;
         bn0.fly.start();
         return 'bonus';
       }
@@ -537,11 +553,14 @@
     YourGame.prototype.resetPlayer = function() {
       this.spriteO.pm.has_collided_dgr = false;
       this.spriteO.spt.alpha = 1;
-      return this.dangerO.destroy_dgr_to(this.spriteO.spt, 200);
+      this.dangerO.destroy_dgr_to(this.spriteO.spt, 200);
+      this.bonusO.destroy_to(this.spriteO.spt, 200);
+      this.spriteO.pm.has_bonus = false;
+      return this.spriteO.pm.has_bonus = false;
     };
 
     YourGame.prototype.create = function() {
-      var bonusBtn, lostBtn;
+      var lostBtn;
       YourGame.__super__.create.call(this);
       this.game.physics.startSystem(Phaser.Physics.ARCADE);
       this.game.world.setBounds(-1000, -1000, 300000, 2000);
@@ -561,22 +580,9 @@
       lostBtn.events.onInputDown.add((function() {
         return this.lost();
       }).bind(this));
-      bonusBtn = this.game.add.text(0, 0, "Bonus");
-      bonusBtn.inputEnabled = true;
-      bonusBtn.y = this.game.height * 0.5 - bonusBtn.height * 0.5 + 50;
-      bonusBtn.x = this.game.width - bonusBtn.width;
-      bonusBtn.events.onInputDown.add((function() {
-        return this.winBonus();
-      }).bind(this));
       if (this.game.gameOptions.fullscreen) {
         lostBtn.x = this.game.width * 0.5 - lostBtn.width * 0.5;
-        lostBtn.y = this.game.height * 0.25;
-        winBtn.x = this.game.width * 0.5 - winBtn.width * 0.5;
-        winBtn.y = this.game.height * 0.5;
-        lostLifeBtn.x = this.game.width * 0.5 - lostLifeBtn.width * 0.5;
-        lostLifeBtn.y = this.game.height * 0.75;
-        bonusBtn.x = this.game.width * 0.5 - winBtn.width * 0.5;
-        return bonusBtn.y = this.game.height * 0.5 + 50;
+        return lostBtn.y = this.game.height * 0.25;
       }
     };
 
