@@ -161,7 +161,7 @@
       this.pm = this.gm.parameters.bns = {
         w: 35,
         h: 47,
-        alt: [190, 215, 250]
+        alt: [150, 150, 150]
       };
       this.bns = this.gm.add.physicsGroup();
       this.bns.enableBody = true;
@@ -387,19 +387,30 @@
     };
 
     Sprite.prototype.check_bonus = function() {
-      var bn0, ref;
+
+      /*
+      #console.log "- #{@_fle_} : ",@bnsO.bns.getAt(0).x
+      bn0 =  @bnsO.bns.getAt(0)
+      if -75 < bn0.x - @spt.x < 30
+          bn0.fly.start()
+          if @spt.y - bn0.y < @bnsO.pm.h
+              if not @pm.has_bonus
+                  @pm.has_bonus = true;
+                  return 'bonus'
+              else
+                  @pm.has_bonus = true;
+                  return 'no bonus'
+       */
+      var bn0, bn0_bounds, spt_bounds;
+      if (this.bnsO.bns.length < 1) {
+        return;
+      }
       bn0 = this.bnsO.bns.getAt(0);
-      if ((0 < (ref = bn0.x - this.spt.x) && ref < 30)) {
+      bn0_bounds = bn0.getBounds();
+      spt_bounds = this.spt.getBounds();
+      if (Phaser.Rectangle.intersects(bn0_bounds, spt_bounds)) {
         bn0.fly.start();
-        if (this.spt.y - bn0.y < this.bnsO.pm.h) {
-          if (!this.pm.has_bonus) {
-            this.pm.has_bonus = true;
-            return 'bonus';
-          } else {
-            this.pm.has_bonus = true;
-            return 'no bonus';
-          }
-        }
+        return 'bonus';
       }
     };
 
@@ -470,7 +481,7 @@
 
     Effects.prototype.play = function(obj) {
       var n;
-      n = this.gm.rnd.integerInRange(0, 1);
+      n = this.gm.rnd.integerInRange(1, 1);
       this.eff = this.gm.add.sprite(50, 100, this.effects[n], 2);
       this.eff.tint = Math.random() * 0xffffff;
       this.eff.anchor.setTo(0.5, 0.5);
@@ -505,11 +516,11 @@
     }
 
     YourGame.prototype.update = function() {
-      var foo, resp1, resp3;
+      var resp1, resp3;
       YourGame.__super__.update.call(this);
       this._fle_ = 'jeu Update';
       if ((resp1 = this.spriteO.check_bonus()) === 'bonus') {
-        foo = 0;
+        this.winBonus();
       }
       if (this.spriteO.collide_with_pfm() === 'win') {
         this.win();

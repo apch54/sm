@@ -16,13 +16,12 @@ class @YourGame extends Phacker.GameState
 
         # bounce with platform & chech bonus
         if (resp1 = @spriteO.check_bonus()) is 'bonus'
-            foo = 0
+            @winBonus()
             #console.log "- #{@_fle_} : ",'bonus'
 
         if @spriteO.collide_with_pfm()  is  'win' then   @win()
 
         if (resp3 = @spriteO.collide_with_dgr()) is 'loose' # test collision with danger
-           #@effectO.play @spriteO
            @lostLife()  #console.log "- #{@_fle_} : ",'loose'
 
         @cameraO.move @spriteO.spt

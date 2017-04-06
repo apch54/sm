@@ -12,15 +12,15 @@ class Phacker.Game.Sprite
     constructor: (@gm, @dgrO, @pfmO, @bnsO) ->
         @_fle_ = 'Sprite'
 
-        @pm = @gm.parameters.spt =
+        @pm = @gm.parameters.spt = # parameters
             x0: 50
             y0: @pfmO.pm.y0 - 200
-            alt_max: 150 # max altitude sprite can reach
-            w: 98  # width of the sprite
-            h: 105 # height of the sprite
-            vx0: 115
-            dvy: 500 # variation of vy when clicking on jump button
-            g : 300
+            alt_max: 150    # max altitude sprite can reach
+            w: 98           # width of the sprite
+            h: 105          # height of the sprite
+            vx0: 115        # initial velocity
+            dvy: 500        # variation of vy when clicking on jump button
+            g : 300         # y gravity
             mess_pfm: "nothing yet" # collide message
             mess_dgr: "no danger yet"
             has_collided : false
@@ -103,10 +103,10 @@ class Phacker.Game.Sprite
     # check sprite overlaping bonus : @bnsO
     #----------.----------
     check_bonus: () ->
-
+        ###
         #console.log "- #{@_fle_} : ",@bnsO.bns.getAt(0).x
         bn0 =  @bnsO.bns.getAt(0)
-        if 0 < bn0.x - @spt.x < 30
+        if -75 < bn0.x - @spt.x < 30
             bn0.fly.start()
             if @spt.y - bn0.y < @bnsO.pm.h
                 if not @pm.has_bonus
@@ -115,7 +115,15 @@ class Phacker.Game.Sprite
                 else
                     @pm.has_bonus = true;
                     return 'no bonus'
+        ###
+        if @bnsO.bns.length < 1 then return
+        bn0 =  @bnsO.bns.getAt(0)
 
+        bn0_bounds = bn0.getBounds()
+        spt_bounds = @spt.getBounds()
+        if Phaser.Rectangle.intersects(bn0_bounds, spt_bounds)
+            bn0.fly.start()
+            return 'bonus'
     #----------.----------
     # tween effect when collide
     #----------.----------
