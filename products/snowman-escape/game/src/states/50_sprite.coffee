@@ -78,7 +78,6 @@ class Phacker.Game.Sprite
     #.----------.----------
     collide_with_dgr:->
 
-        #console.log "- #{@_fle_} : ", @pm.has_collided_dgr
         if @gm.physics.arcade.collide(
             @spt, @dgrO.dgr
             -> return true
@@ -94,16 +93,14 @@ class Phacker.Game.Sprite
         if @pm.has_collided_dgr
             @pm.mess_dgr = 'had loose yet'
             return
-
-        #console.log "- #{@_fle_} : ",'in loose'
+        @effO.play dgr
         @pm.mess_dgr = 'loose'
         @pm.has_collided_dgr = true
         @twn_spt_collide()
-        #spt.alpha = 0
         return true
 
     #----------.----------
-    # check sprite overlaping bonus
+    # check sprite overlaping bonus : @bnsO
     #----------.----------
     check_bonus: () ->
 
@@ -140,4 +137,9 @@ class Phacker.Game.Sprite
             @
         )
         twn_collide.start()
+
+    #----------.----------
+    # bind sprite whith effectO
+    #----------.----------
+    bind: (effO) -> @effO =effO
 

@@ -379,6 +379,7 @@
         this.pm.mess_dgr = 'had loose yet';
         return;
       }
+      this.effO.play(dgr);
       this.pm.mess_dgr = 'loose';
       this.pm.has_collided_dgr = true;
       this.twn_spt_collide();
@@ -418,6 +419,10 @@
         return this.spt.body.velocity.x = 0;
       }, this);
       return twn_collide.start();
+    };
+
+    Sprite.prototype.bind = function(effO) {
+      return this.effO = effO;
     };
 
     return Sprite;
@@ -463,14 +468,14 @@
       this.effects = ['effect1', 'effect3', 'effect2'];
     }
 
-    Effects.prototype.play = function(spriteO) {
+    Effects.prototype.play = function(obj) {
       var n;
-      console.log("- " + this._fle_ + " : ", 'I m in effect');
       n = this.gm.rnd.integerInRange(0, 1);
       this.eff = this.gm.add.sprite(50, 100, this.effects[n], 2);
+      this.eff.anchor.setTo(0.5, 0);
       this.eff.animations.add('explode', [2, 1, 0, 1], 8, true);
-      this.eff.x = spriteO.spt.x;
-      this.eff.y = spriteO.spt.y - spriteO.spt.height;
+      this.eff.x = obj.x;
+      this.eff.y = obj.y - obj.height;
       return this.eff.animations.play('explode');
     };
 
@@ -508,8 +513,7 @@
       if (this.spriteO.collide_with_pfm() === 'win') {
         this.win();
       }
-      if ((resp3 = resp3 = this.spriteO.collide_with_dgr()) === 'loose') {
-        this.effectO.play(this.spriteO);
+      if ((resp3 = this.spriteO.collide_with_dgr()) === 'loose') {
         this.lostLife();
       }
       this.cameraO.move(this.spriteO.spt);
@@ -538,6 +542,7 @@
       this.platformO.bind(this.spriteO);
       this.cameraO = new Phacker.Game.My_camera(this.game);
       this.effectO = new Phacker.Game.Effects(this.game);
+      this.spriteO.bind(this.effectO);
       lostBtn = this.game.add.text(0, 0, "Bad Action");
       lostBtn.inputEnabled = true;
       lostBtn.y = this.game.height * 0.5 - lostBtn.height * 0.5;

@@ -21,8 +21,8 @@ class @YourGame extends Phacker.GameState
 
         if @spriteO.collide_with_pfm()  is  'win' then   @win()
 
-        if (resp3 =resp3 = @spriteO.collide_with_dgr()) is 'loose' # test collision with danger
-           @effectO.play @spriteO
+        if (resp3 = @spriteO.collide_with_dgr()) is 'loose' # test collision with danger
+           #@effectO.play @spriteO
            @lostLife()  #console.log "- #{@_fle_} : ",'loose'
 
         @cameraO.move @spriteO.spt
@@ -55,7 +55,9 @@ class @YourGame extends Phacker.GameState
         @platformO.bind @spriteO #, bonusO
 
         @cameraO = new Phacker.Game.My_camera @game
+
         @effectO = new Phacker.Game.Effects @game
+        @spriteO.bind @effectO
 
         lostBtn = @game.add.text(0, 0, "Bad Action");
         lostBtn.inputEnabled = true;
