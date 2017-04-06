@@ -1,4 +1,12 @@
 ###  written by fc on 2017-03-31  ###
+
+#    ___                _   _         
+#   / __|  _ __   _ _  (_) | |_   ___ 
+#   \__ \ | '_ \ | '_| | | |  _| / -_)
+#   |___/ | .__/ |_|   |_|  \__| \___|
+#         |_|                         
+
+
 class Phacker.Game.Sprite
 
     constructor: (@gm, @dgrO, @pfmO, @bnsO) ->
