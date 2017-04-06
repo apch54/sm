@@ -455,6 +455,35 @@
 
 }).call(this);
 
+(function() {
+  Phacker.Game.Effects = (function() {
+    function Effects(gm) {
+      this.gm = gm;
+      this._fle_ = 'Effect';
+      this.effects = ['effect1', 'effect3', 'effect2'];
+    }
+
+    Effects.prototype.play = function(spriteO) {
+      var n;
+      console.log("- " + this._fle_ + " : ", 'I m in effect');
+      n = this.gm.rnd.integerInRange(0, 1);
+      this.eff = this.gm.add.sprite(50, 100, this.effects[n], 2);
+      this.eff.animations.add('explode', [2, 1, 0, 1], 8, true);
+      this.eff.x = spriteO.spt.x;
+      this.eff.y = spriteO.spt.y - spriteO.spt.height;
+      return this.eff.animations.play('explode');
+    };
+
+    Effects.prototype.stop = function() {
+      return this.eff.destroy();
+    };
+
+    return Effects;
+
+  })();
+
+}).call(this);
+
 
 /* written by fc on 2017-04-01 */
 
@@ -479,8 +508,8 @@
       if (this.spriteO.collide_with_pfm() === 'win') {
         this.win();
       }
-      resp3 = this.spriteO.collide_with_dgr();
-      if (resp3 === 'loose') {
+      if ((resp3 = resp3 = this.spriteO.collide_with_dgr()) === 'loose') {
+        this.effectO.play(this.spriteO);
         this.lostLife();
       }
       this.cameraO.move(this.spriteO.spt);
@@ -491,7 +520,7 @@
 
     YourGame.prototype.resetPlayer = function() {
       this.spriteO.pm.has_collided_dgr = false;
-      this.spriteO.spt.alpha = true;
+      this.spriteO.spt.alpha = 1;
       return this.dangerO.destroy_dgr_to(this.spriteO.spt, 200);
     };
 
@@ -508,6 +537,7 @@
       this.bgO.bind(this.spriteO, this.platformO);
       this.platformO.bind(this.spriteO);
       this.cameraO = new Phacker.Game.My_camera(this.game);
+      this.effectO = new Phacker.Game.Effects(this.game);
       lostBtn = this.game.add.text(0, 0, "Bad Action");
       lostBtn.inputEnabled = true;
       lostBtn.y = this.game.height * 0.5 - lostBtn.height * 0.5;

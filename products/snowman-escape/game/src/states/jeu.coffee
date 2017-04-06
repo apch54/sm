@@ -21,11 +21,9 @@ class @YourGame extends Phacker.GameState
 
         if @spriteO.collide_with_pfm()  is  'win' then   @win()
 
-        resp3 = @spriteO.collide_with_dgr()
-        #console.log "- #{@_fle_} : ",resp3
-        if resp3 is 'loose' # test colision with danger
+        if (resp3 =resp3 = @spriteO.collide_with_dgr()) is 'loose' # test collision with danger
+           @effectO.play @spriteO
            @lostLife()  #console.log "- #{@_fle_} : ",'loose'
-
 
         @cameraO.move @spriteO.spt
         @bgO.create_destroy()
@@ -34,13 +32,10 @@ class @YourGame extends Phacker.GameState
 
 
     resetPlayer: ->
-
         @spriteO.pm.has_collided_dgr = false
         #@spriteO.spt.y -= 100
-        @spriteO.spt.alpha  = true
-        # destroy danger from spt.x to spt.x + wx
-        @dangerO.destroy_dgr_to @spriteO.spt, 200
-
+        @spriteO.spt.alpha  = 1
+        @dangerO.destroy_dgr_to @spriteO.spt, 200 # destroy danger from spt.x to spt.x + wx
 
 
     create: ->
@@ -60,11 +55,8 @@ class @YourGame extends Phacker.GameState
         @platformO.bind @spriteO #, bonusO
 
         @cameraO = new Phacker.Game.My_camera @game
+        @effectO = new Phacker.Game.Effects @game
 
-
-        ##### LOGIC OF YOUR GAME #####
-        # Examples buttons actions
-        #
         lostBtn = @game.add.text(0, 0, "Bad Action");
         lostBtn.inputEnabled = true;
         lostBtn.y = @game.height * 0.5 - lostBtn.height * 0.5
