@@ -18,7 +18,9 @@ class Phacker.Game.Sprite
             alt_max: 200  # max altitude sprite can reach
             w: 98           # width of the sprite
             h: 105          # height of the sprite
-            vx0: 115        # initial velocity
+            vx0: @gm.gameOptions.vx0    # initial velocity
+            vx1: @gm.gameOptions.vx1         # snow man vx variation for acceleration
+            vx2: @gm.gameOptions.vx2
             vxlow: 40       # low vi when bouncing
             dvy: 500        # variation of vy when clicking on jump button
             g : 300         # y gravity
@@ -34,7 +36,7 @@ class Phacker.Game.Sprite
         @spt.body.bounce.y = 1.2
         @spt.body.gravity.y = @pm.g
         @spt.body.velocity.x = @pm.vx0
-        @spt.body.velocity.y = @pm.dvy
+        #@spt.body.velocity.y = @pm.dvy
 
         @anim_spt = @spt.animations.add 'jmp', [0, 1, 2, 1, 3, 0, ], 15, false
         #@spt.animations.play('jmp')
@@ -128,6 +130,8 @@ class Phacker.Game.Sprite
             @pm.has_bonus = true
             bn0.fly.start()
             return 'bonus'
+
+        # fly away and destroy if not overlaping
         else if -75 < bn0.x - @spt.x < 30 then bn0.fly.start()
 
     #----------.----------

@@ -161,7 +161,7 @@
       this.pm = this.gm.parameters.bns = {
         w: 35,
         h: 47,
-        alt: [280, 280, 280]
+        alt: [220, 240, 260]
       };
       this.bns = this.gm.add.physicsGroup();
       this.bns.enableBody = true;
@@ -240,7 +240,7 @@
       this.make_one_pfm(this.pm.x0, this.pm.y0, 0);
       results = [];
       for (i = j = 1, ref = this.pm.n - 1; 1 <= ref ? j <= ref : j >= ref; i = 1 <= ref ? ++j : --j) {
-        if (i === 5) {
+        if (i === 3 || i === 5) {
           nd = 1;
         } else {
           nd = 0;
@@ -282,36 +282,69 @@
     Platform.prototype.game_rules = function() {
       var bns, lastP, lastP1, len, nn, yy;
       len = this.pfm.length;
-      console.log("- " + this._fle_ + " : ", len);
       lastP = this.pfm.getAt(len - 1);
-      if (lastP.n_danger > 1) {
-        nn = [this.gm.rnd.integerInRange(0, 1)];
-      } else {
-        nn = [this.gm.rnd.integerInRange(1, 3)];
-      }
       if (this.gm.rnd.integerInRange(0, 3) < 1) {
         bns = true;
       } else {
         bns = false;
       }
-      if (this.gm.ge.score < 0) {
+      if (this.gm.ge.score < 40) {
+        if (lastP.n_danger > 1) {
+          nn = [this.gm.rnd.integerInRange(0, 1)];
+        } else {
+          nn = [this.gm.rnd.integerInRange(1, 2)];
+        }
         yy = lastP.y;
-      }
-      if (this.gm.ge.score < 100) {
+      } else if (this.gm.ge.score < 90) {
+        if (lastP.n_danger > 1) {
+          nn = [this.gm.rnd.integerInRange(0, 1)];
+        } else {
+          nn = [this.gm.rnd.integerInRange(1, 2)];
+        }
+        yy = lastP.y;
+        this.sptO.pm.vx0 = this.sptO.pm.vx1;
+      } else if (this.gm.ge.score < 150) {
+        if (lastP.n_danger > 1) {
+          nn = [this.gm.rnd.integerInRange(0, 1)];
+        } else {
+          nn = [this.gm.rnd.integerInRange(1, 2)];
+        }
         if (len > 2) {
           lastP1 = this.pfm.getAt(len - 2);
         }
         if (lastP.y === lastP1.y) {
-          if (lastP.y === this.pm.y0) {
-            yy = this.pm.ay0[this.gm.rnd.integerInRange(0, 2)];
-          } else if (lastP.y > this.pm.y0) {
-            yy = this.pm.ay0[this.gm.rnd.integerInRange(1, 2)];
-          } else if (lastP.y < this.pm.y0) {
+          if (lastP.y > this.pm.y0) {
             yy = this.pm.ay0[this.gm.rnd.integerInRange(0, 1)];
+          } else if (lastP.y < this.pm.y0) {
+            yy = this.pm.ay0[this.gm.rnd.integerInRange(1, 2)];
+          } else if (lastP.y === this.pm.y0) {
+            yy = this.pm.ay0[this.gm.rnd.integerInRange(0, 2)];
           }
         } else {
           yy = lastP.y;
         }
+        this.sptO.pm.vx0 = this.sptO.pm.vx1;
+      } else {
+        if (lastP.n_danger > 1) {
+          nn = [this.gm.rnd.integerInRange(0, 1)];
+        } else {
+          nn = [this.gm.rnd.integerInRange(1, 3)];
+        }
+        if (len > 2) {
+          lastP1 = this.pfm.getAt(len - 2);
+        }
+        if (lastP.y === lastP1.y) {
+          if (lastP.y > this.pm.y0) {
+            yy = this.pm.ay0[this.gm.rnd.integerInRange(0, 1)];
+          } else if (lastP.y < this.pm.y0) {
+            yy = this.pm.ay0[this.gm.rnd.integerInRange(1, 2)];
+          } else if (lastP.y === this.pm.y0) {
+            yy = this.pm.ay0[this.gm.rnd.integerInRange(0, 2)];
+          }
+        } else {
+          yy = lastP.y;
+        }
+        this.sptO.pm.vx0 = this.sptO.pm.vx2;
       }
       return {
         y: yy,
@@ -347,7 +380,9 @@
         alt_max: 200,
         w: 98,
         h: 105,
-        vx0: 115,
+        vx0: this.gm.gameOptions.vx0,
+        vx1: this.gm.gameOptions.vx1,
+        vx2: this.gm.gameOptions.vx2,
         vxlow: 40,
         dvy: 500,
         g: 300,
@@ -363,7 +398,6 @@
       this.spt.body.bounce.y = 1.2;
       this.spt.body.gravity.y = this.pm.g;
       this.spt.body.velocity.x = this.pm.vx0;
-      this.spt.body.velocity.y = this.pm.dvy;
       this.anim_spt = this.spt.animations.add('jmp', [0, 1, 2, 1, 3, 0], 15, false);
     }
 
