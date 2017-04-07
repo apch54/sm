@@ -15,10 +15,11 @@ class Phacker.Game.Sprite
         @pm = @gm.parameters.spt = # parameters
             x0: 50
             y0: @pfmO.pm.y0 - 200
-            alt_max: 200    # max altitude sprite can reach
+            alt_max: 200  # max altitude sprite can reach
             w: 98           # width of the sprite
             h: 105          # height of the sprite
             vx0: 115        # initial velocity
+            vxlow: 40       # low vi when bouncing
             dvy: 500        # variation of vy when clicking on jump button
             g : 300         # y gravity
             mess_pfm: "nothing yet" # collide message
@@ -33,6 +34,7 @@ class Phacker.Game.Sprite
         @spt.body.bounce.y = 1.2
         @spt.body.gravity.y = @pm.g
         @spt.body.velocity.x = @pm.vx0
+        @spt.body.velocity.y = @pm.dvy
 
         @anim_spt = @spt.animations.add 'jmp', [0, 1, 2, 1, 3, 0, ], 15, false
         #@spt.animations.play('jmp')
@@ -45,7 +47,6 @@ class Phacker.Game.Sprite
 
         # is sprite over alt max ?
         if (@pfmO.pm.y0 - @spt.y) > @pm.alt_max
-            console.log "- #{@_fle_} : ",@pfmO.pm.y0 , @spt.y , @pm.alt_max
             @spt.body.velocity.y = 10
             @spt.body.velocity.x = @pm.vx0
             @gm.parameters.btn.had_tapped = false
@@ -127,6 +128,8 @@ class Phacker.Game.Sprite
             @pm.has_bonus = true
             bn0.fly.start()
             return 'bonus'
+        else if -75 < bn0.x - @spt.x < 30 then bn0.fly.start()
+
     #----------.----------
     # tween effect when collide
     #----------.----------

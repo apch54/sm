@@ -71,7 +71,7 @@ class Phacker.Game.Back_ground
         if new Date().getTime()- @pm.btn.topCollidePfm   < 100 then return
         if @pm.btn.had_tapped then return
         @sptO.spt.body.velocity.y = @sptO.pm.dvy
-        @sptO.spt.body.velocity.x /= 2
+        @sptO.spt.body.velocity.x = @sptO.pm.vxlow
         @pm.btn.had_tapped = true
         #console.log "- #{@_fle_} : ", '--- im in on tap ---'
 

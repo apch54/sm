@@ -59,7 +59,7 @@
         return;
       }
       this.sptO.spt.body.velocity.y = this.sptO.pm.dvy;
-      this.sptO.spt.body.velocity.x /= 2;
+      this.sptO.spt.body.velocity.x = this.sptO.pm.vxlow;
       return this.pm.btn.had_tapped = true;
     };
 
@@ -161,7 +161,7 @@
       this.pm = this.gm.parameters.bns = {
         w: 35,
         h: 47,
-        alt: [220, 250, 280]
+        alt: [280, 280, 280]
       };
       this.bns = this.gm.add.physicsGroup();
       this.bns.enableBody = true;
@@ -230,6 +230,7 @@
         last_x: 0,
         n: this.gm.gameOptions.fullscreen ? 6 : 8
       };
+      this.pm.ay0 = [this.pm.y0 + this.pm.h / 2, this.pm.y0, this.pm.y0 - this.pm.h / 2];
       this.pfm = this.gm.add.physicsGroup();
       this.init_pfm();
     }
@@ -239,13 +240,13 @@
       this.make_one_pfm(this.pm.x0, this.pm.y0, 0);
       results = [];
       for (i = j = 1, ref = this.pm.n - 1; 1 <= ref ? j <= ref : j >= ref; i = 1 <= ref ? ++j : --j) {
-        if (i === 3 || i === 5) {
+        if (i === 5) {
           nd = 1;
         } else {
           nd = 0;
         }
         this.make_one_pfm(this.pm.last_x + this.pm.w, this.pm.y0, nd);
-        if (i === 3) {
+        if (i === 4) {
           results.push(this.bnsO.make_bonus(this.pm.last_x + this.pm.w, this.pm.y0));
         } else {
           results.push(void 0);
@@ -279,18 +280,38 @@
     };
 
     Platform.prototype.game_rules = function() {
-      var bns, lastP, nn, yy;
-      lastP = this.pfm.getAt(this.pfm.length - 1);
-      if (lastP.n_danger > 0) {
-        nn = 0;
+      var bns, lastP, lastP1, len, nn, yy;
+      len = this.pfm.length;
+      console.log("- " + this._fle_ + " : ", len);
+      lastP = this.pfm.getAt(len - 1);
+      if (lastP.n_danger > 1) {
+        nn = [this.gm.rnd.integerInRange(0, 1)];
       } else {
-        nn = this.gm.rnd.integerInRange(1, 3);
+        nn = [this.gm.rnd.integerInRange(1, 3)];
       }
-      yy = lastP.y;
       if (this.gm.rnd.integerInRange(0, 3) < 1) {
         bns = true;
       } else {
         bns = false;
+      }
+      if (this.gm.ge.score < 0) {
+        yy = lastP.y;
+      }
+      if (this.gm.ge.score < 100) {
+        if (len > 2) {
+          lastP1 = this.pfm.getAt(len - 2);
+        }
+        if (lastP.y === lastP1.y) {
+          if (lastP.y === this.pm.y0) {
+            yy = this.pm.ay0[this.gm.rnd.integerInRange(0, 2)];
+          } else if (lastP.y > this.pm.y0) {
+            yy = this.pm.ay0[this.gm.rnd.integerInRange(1, 2)];
+          } else if (lastP.y < this.pm.y0) {
+            yy = this.pm.ay0[this.gm.rnd.integerInRange(0, 1)];
+          }
+        } else {
+          yy = lastP.y;
+        }
       }
       return {
         y: yy,
@@ -327,6 +348,7 @@
         w: 98,
         h: 105,
         vx0: 115,
+        vxlow: 40,
         dvy: 500,
         g: 300,
         mess_pfm: "nothing yet",
@@ -341,12 +363,12 @@
       this.spt.body.bounce.y = 1.2;
       this.spt.body.gravity.y = this.pm.g;
       this.spt.body.velocity.x = this.pm.vx0;
+      this.spt.body.velocity.y = this.pm.dvy;
       this.anim_spt = this.spt.animations.add('jmp', [0, 1, 2, 1, 3, 0], 15, false);
     }
 
     Sprite.prototype.collide_with_pfm = function() {
       if ((this.pfmO.pm.y0 - this.spt.y) > this.pm.alt_max) {
-        console.log("- " + this._fle_ + " : ", this.pfmO.pm.y0, this.spt.y, this.pm.alt_max);
         this.spt.body.velocity.y = 10;
         this.spt.body.velocity.x = this.pm.vx0;
         this.gm.parameters.btn.had_tapped = false;
@@ -414,7 +436,7 @@
                   @pm.has_bonus = true;
                   return 'no bonus'
        */
-      var bn0, bn0_bounds, spt_bounds;
+      var bn0, bn0_bounds, ref, spt_bounds;
       if (this.bnsO.bns.length < 1) {
         return;
       }
@@ -428,6 +450,8 @@
         this.pm.has_bonus = true;
         bn0.fly.start();
         return 'bonus';
+      } else if ((-75 < (ref = bn0.x - this.spt.x) && ref < 30)) {
+        return bn0.fly.start();
       }
     };
 
@@ -554,10 +578,10 @@
 
     YourGame.prototype.resetPlayer = function() {
       this.spriteO.pm.has_collided_dgr = false;
+      this.spriteO.pm.has_bonus = false;
       this.spriteO.spt.alpha = 1;
       this.dangerO.destroy_dgr_to(this.spriteO.spt, 200);
-      this.bonusO.destroy_to(this.spriteO.spt, 200);
-      return this.spriteO.pm.has_bonus = false;
+      return this.bonusO.destroy_to(this.spriteO.spt, 200);
     };
 
     YourGame.prototype.create = function() {
