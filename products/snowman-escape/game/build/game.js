@@ -323,7 +323,7 @@
       this.pm = this.gm.parameters.spt = {
         x0: 50,
         y0: this.pfmO.pm.y0 - 200,
-        alt_max: 150,
+        alt_max: 200,
         w: 98,
         h: 105,
         vx0: 115,
@@ -346,6 +346,7 @@
 
     Sprite.prototype.collide_with_pfm = function() {
       if ((this.pfmO.pm.y0 - this.spt.y) > this.pm.alt_max) {
+        console.log("- " + this._fle_ + " : ", this.pfmO.pm.y0, this.spt.y, this.pm.alt_max);
         this.spt.body.velocity.y = 10;
         this.spt.body.velocity.x = this.pm.vx0;
         this.gm.parameters.btn.had_tapped = false;
@@ -443,7 +444,8 @@
       }, 1500, Phaser.Easing.Linear.None);
       twn_collide.onComplete.addOnce(function() {
         this.spt.body.velocity.y = -10;
-        return this.spt.body.velocity.x = 0;
+        this.spt.body.velocity.x = 0;
+        return this.spt.anchor.setTo(0, 0);
       }, this);
       return twn_collide.start();
     };
@@ -555,7 +557,6 @@
       this.spriteO.spt.alpha = 1;
       this.dangerO.destroy_dgr_to(this.spriteO.spt, 200);
       this.bonusO.destroy_to(this.spriteO.spt, 200);
-      this.spriteO.pm.has_bonus = false;
       return this.spriteO.pm.has_bonus = false;
     };
 

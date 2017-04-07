@@ -15,7 +15,7 @@ class Phacker.Game.Sprite
         @pm = @gm.parameters.spt = # parameters
             x0: 50
             y0: @pfmO.pm.y0 - 200
-            alt_max: 150    # max altitude sprite can reach
+            alt_max: 200    # max altitude sprite can reach
             w: 98           # width of the sprite
             h: 105          # height of the sprite
             vx0: 115        # initial velocity
@@ -45,6 +45,7 @@ class Phacker.Game.Sprite
 
         # is sprite over alt max ?
         if (@pfmO.pm.y0 - @spt.y) > @pm.alt_max
+            console.log "- #{@_fle_} : ",@pfmO.pm.y0 , @spt.y , @pm.alt_max
             @spt.body.velocity.y = 10
             @spt.body.velocity.x = @pm.vx0
             @gm.parameters.btn.had_tapped = false
@@ -144,6 +145,7 @@ class Phacker.Game.Sprite
             ->
                 @spt.body.velocity.y = -10
                 @spt.body.velocity.x =  0
+                @spt.anchor.setTo( 0,0)
             @
         )
         twn_collide.start()

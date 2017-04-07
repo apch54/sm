@@ -37,7 +37,6 @@ class @YourGame extends Phacker.GameState
         @dangerO.destroy_dgr_to @spriteO.spt, 200 # destroy danger from spt.x to spt.x + wx
         @bonusO.destroy_to @spriteO.spt, 200 # destroy danger from spt.x to spt.x + wx
         @spriteO.pm.has_bonus = false
-        @spriteO.pm.has_bonus = false
 
     create: ->
         super() #Required
