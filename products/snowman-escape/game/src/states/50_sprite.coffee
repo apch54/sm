@@ -38,10 +38,14 @@ class Phacker.Game.Sprite
         @spt.body.velocity.x = @pm.vx0
         #@spt.body.velocity.y = @pm.dvy
 
-        @anim_spt = @spt.animations.add 'jmp', [0, 1, 2, 1, 3, 0, ], 15, false
+        @anim_spt = @spt.animations.add 'jmp', [0, 1, 2, 3, 2, 1, 0 ], 15, false
         #@spt.animations.play('jmp')
 
-
+#        @bns = @gm.add.sprite 500,200 , 'bonus_sprite'
+#        @gm.physics.arcade.enable @bns,Phaser.Physics.ARCADE
+#        @bns.body.velocity.x = @pm.vx0
+#        walk = @bns.animations.add('walk')
+#        @bns.animations.play 'walk', 30, true
     #.----------.----------
     # collide sprite with platform
     #.----------.----------

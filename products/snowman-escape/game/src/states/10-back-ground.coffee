@@ -31,7 +31,7 @@ class Phacker.Game.Back_ground
         @pm.btn = # global parameters for jump button
             w: 200
             h: 55
-            y0: if @gm.gameOptions.fullscreen then @pm.gm.h + 5  else @pm.gm.h - 18
+            y0: if @gm.gameOptions.fullscreen then @pm.gm.h - 10 else @pm.gm.h - 18
             had_tapped: false
             topCollidePfm : 0 # top collision pfm against sprite
         @pm.btn.x0 = @pm.bg.middleX - @pm.btn.w / 2

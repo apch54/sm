@@ -23,7 +23,7 @@
       this.pm.btn = {
         w: 200,
         h: 55,
-        y0: this.gm.gameOptions.fullscreen ? this.pm.gm.h + 5 : this.pm.gm.h - 18,
+        y0: this.gm.gameOptions.fullscreen ? this.pm.gm.h - 10 : this.pm.gm.h - 18,
         had_tapped: false,
         topCollidePfm: 0
       };
@@ -398,7 +398,7 @@
       this.spt.body.bounce.y = 1.2;
       this.spt.body.gravity.y = this.pm.g;
       this.spt.body.velocity.x = this.pm.vx0;
-      this.anim_spt = this.spt.animations.add('jmp', [0, 1, 2, 1, 3, 0], 15, false);
+      this.anim_spt = this.spt.animations.add('jmp', [0, 1, 2, 3, 2, 1, 0], 15, false);
     }
 
     Sprite.prototype.collide_with_pfm = function() {
