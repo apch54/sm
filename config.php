@@ -21,8 +21,8 @@ $gameOptions = array(
     'vx2' => 210 , // last x velocity  
 
     // sprite vy at top bounds; vyTop > 0 for below
-    // better  between 50 and 200
-    'vyTop'=> 150,
+    // better  between 50 and 250
+    'vyTop'=> 120,
 
     // tint effect if true; only for platform collision
     // not for bonus one

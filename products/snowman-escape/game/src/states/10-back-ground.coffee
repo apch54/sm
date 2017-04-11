@@ -27,6 +27,7 @@ class Phacker.Game.Back_ground
             h: 500
             scaleY: if @gm.gameOptions.fullscreen  then 1 else .85
             middleX: if @gm.gameOptions.fullscreen  then 187 else 384
+            dvx: .75 # background velocity.x
 
         @pm.btn = # global parameters for jump button
             w: 200
@@ -90,6 +91,9 @@ class Phacker.Game.Back_ground
     #  rolling in platform
     #.----------.----------
     create_destroy:() ->
+        # move all bgs
+        for i in [0..@bgs.length - 1] then   @bgs.getAt(i).x  -= @pm.bg.dvx
+
         bg0 = @bgs.getAt(0)
         #console.log "- #{@_fle_} : ",@sptO.spt.x - @pm.bg.w ,  bg0.x
 

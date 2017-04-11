@@ -18,7 +18,8 @@
         w: 768,
         h: 500,
         scaleY: this.gm.gameOptions.fullscreen ? 1 : .85,
-        middleX: this.gm.gameOptions.fullscreen ? 187 : 384
+        middleX: this.gm.gameOptions.fullscreen ? 187 : 384,
+        dvx: .75
       };
       this.pm.btn = {
         w: 200,
@@ -71,7 +72,10 @@
     };
 
     Back_ground.prototype.create_destroy = function() {
-      var bg0, bg3, x3;
+      var bg0, bg3, i, j, ref, x3;
+      for (i = j = 0, ref = this.bgs.length - 1; 0 <= ref ? j <= ref : j >= ref; i = 0 <= ref ? ++j : --j) {
+        this.bgs.getAt(i).x -= this.pm.bg.dvx;
+      }
       bg0 = this.bgs.getAt(0);
       if (this.gm.camera.x > bg0.x + this.pm.bg.w) {
         bg0.destroy();
