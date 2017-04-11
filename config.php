@@ -19,6 +19,7 @@ $gameOptions = array(
     'vx0' => 150 , // init velocity until score is 40 ( in pixel per second)
     'vx1' => 180 , // first acceleration till score is 150
     'vx2' => 210 , // last x velocity  
+    'color_effect' => false
 
 );
 //

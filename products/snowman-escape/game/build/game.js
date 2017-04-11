@@ -548,9 +548,11 @@
 
     Effects.prototype.play = function(obj) {
       var n;
-      n = this.gm.rnd.integerInRange(1, 1);
+      n = this.gm.gameOptions.color_effect ? this.gm.rnd.integerInRange(1, 1) : this.gm.rnd.integerInRange(0, 1);
       this.eff = this.gm.add.sprite(50, 100, this.effects[n], 2);
-      this.eff.tint = Math.random() * 0xffffff;
+      if (this.gm.gameOptions.color_effect) {
+        this.eff.tint = Math.random() * 0xffffff;
+      }
       this.eff.anchor.setTo(0.5, 0.5);
       this.eff.animations.add('explode', [2, 1, 0, 1], 8, true);
       this.eff.x = obj.x;
