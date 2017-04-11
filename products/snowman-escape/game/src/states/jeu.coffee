@@ -60,20 +60,6 @@ class @YourGame extends Phacker.GameState
 
         @effectO = new Phacker.Game.Effects @game
         @spriteO.bind @effectO
+        @bonusO.bind @effectO
 
-
-
-
-        lostBtn = @game.add.text(0, 0, "Bad Action");
-        lostBtn.inputEnabled = true;
-        lostBtn.y = @game.height * 0.5 - lostBtn.height * 0.5
-        lostBtn.events.onInputDown.add ( ->
-          @lost()
-        ).bind @
-
-        #Placement specific for mobile
-
-        if @game.gameOptions.fullscreen
-          lostBtn.x = @game.width * 0.5 - lostBtn.width * 0.5
-          lostBtn.y = @game.height * 0.25
 

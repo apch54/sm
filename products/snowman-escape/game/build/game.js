@@ -205,6 +205,10 @@
       return this.bns.getAt(0).destroy();
     };
 
+    Bonus.prototype.bind = function(effO) {
+      return this.effO = effO;
+    };
+
     return Bonus;
 
   })();
@@ -456,20 +460,6 @@
     };
 
     Sprite.prototype.check_bonus = function() {
-
-      /*
-      #console.log "- #{@_fle_} : ",@bnsO.bns.getAt(0).x
-      bn0 =  @bnsO.bns.getAt(0)
-      if -75 < bn0.x - @spt.x < 30
-          bn0.fly.start()
-          if @spt.y - bn0.y < @bnsO.pm.h
-              if not @pm.has_bonus
-                  @pm.has_bonus = true;
-                  return 'bonus'
-              else
-                  @pm.has_bonus = true;
-                  return 'no bonus'
-       */
       var bn0, bn0_bounds, ref, spt_bounds;
       if (this.bnsO.bns.length < 1) {
         return;
@@ -482,10 +472,11 @@
       spt_bounds = this.spt.getBounds();
       if (Phaser.Rectangle.intersects(bn0_bounds, spt_bounds)) {
         this.pm.has_bonus = true;
-        bn0.fly.start();
+        this.effO.bonus(bn0.x, bn0.y);
+        bn0.destroy();
         return 'bonus';
       } else if ((-75 < (ref = bn0.x - this.spt.x) && ref < 30)) {
-        return bn0.fly.start();
+        return bn0.destroy();
       }
     };
 
@@ -567,6 +558,23 @@
       return this.eff.animations.play('explode');
     };
 
+    Effects.prototype.bonus = function(x, y) {
+      var anim, n;
+      if (this.eff != null) {
+        this.eff.destroy();
+      }
+      n = this.gm.rnd.integerInRange(1, 1);
+      this.eff = this.gm.add.sprite(50, 100, this.effects[n], 2);
+      this.eff.anchor.setTo(0.5, 0.5);
+      anim = this.eff.animations.add('explode', [2, 1, 0, 1], 8, false);
+      anim.onComplete.add(function() {
+        return this.eff.destroy();
+      }, this);
+      this.eff.x = x;
+      this.eff.y = y;
+      return this.eff.animations.play('explode');
+    };
+
     Effects.prototype.stop = function() {
       return this.eff.destroy();
     };
@@ -619,7 +627,6 @@
     };
 
     YourGame.prototype.create = function() {
-      var lostBtn;
       YourGame.__super__.create.call(this);
       this.game.physics.startSystem(Phaser.Physics.ARCADE);
       this.game.world.setBounds(-1000, -1000, 300000, 2000);
@@ -633,16 +640,7 @@
       this.cameraO = new Phacker.Game.My_camera(this.game);
       this.effectO = new Phacker.Game.Effects(this.game);
       this.spriteO.bind(this.effectO);
-      lostBtn = this.game.add.text(0, 0, "Bad Action");
-      lostBtn.inputEnabled = true;
-      lostBtn.y = this.game.height * 0.5 - lostBtn.height * 0.5;
-      lostBtn.events.onInputDown.add((function() {
-        return this.lost();
-      }).bind(this));
-      if (this.game.gameOptions.fullscreen) {
-        lostBtn.x = this.game.width * 0.5 - lostBtn.width * 0.5;
-        return lostBtn.y = this.game.height * 0.25;
-      }
+      return this.bonusO.bind(this.effectO);
     };
 
     return YourGame;

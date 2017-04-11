@@ -111,19 +111,7 @@ class Phacker.Game.Sprite
     # check sprite overlaping bonus : @bnsO
     #----------.----------
     check_bonus: () ->
-        ###
-        #console.log "- #{@_fle_} : ",@bnsO.bns.getAt(0).x
-        bn0 =  @bnsO.bns.getAt(0)
-        if -75 < bn0.x - @spt.x < 30
-            bn0.fly.start()
-            if @spt.y - bn0.y < @bnsO.pm.h
-                if not @pm.has_bonus
-                    @pm.has_bonus = true;
-                    return 'bonus'
-                else
-                    @pm.has_bonus = true;
-                    return 'no bonus'
-        ###
+
         if @bnsO.bns.length < 1 then return
         if @pm.has_bonus then return
         bn0 =  @bnsO.bns.getAt(0)
@@ -132,11 +120,13 @@ class Phacker.Game.Sprite
         spt_bounds = @spt.getBounds()
         if Phaser.Rectangle.intersects(bn0_bounds, spt_bounds)
             @pm.has_bonus = true
-            bn0.fly.start()
+            #bn0.fly.start()
+            @effO.bonus bn0.x, bn0.y
+            bn0.destroy()
             return 'bonus'
 
         # fly away and destroy if not overlaping
-        else if -75 < bn0.x - @spt.x < 30 then bn0.fly.start()
+        else if -75 < bn0.x - @spt.x < 30 then bn0.destroy() #bn0.fly.start()
 
     #----------.----------
     # tween effect when collide
