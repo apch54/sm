@@ -560,9 +560,6 @@
 
     Effects.prototype.bonus = function(x, y) {
       var anim, n;
-      if (this.eff != null) {
-        this.eff.destroy();
-      }
       n = this.gm.rnd.integerInRange(1, 1);
       this.eff = this.gm.add.sprite(50, 100, this.effects[n], 2);
       this.eff.anchor.setTo(0.5, 0.5);
