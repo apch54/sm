@@ -432,7 +432,7 @@
       this.pm.has_bonus = false;
       spt.body.velocity.x = this.pm.vx0;
       spt.animations.play('jmp');
-      if (!pfm.touched_once) {
+      if (!pfm.touched_once && !this.pm.has_collided_dgr) {
         this.pm.mess_pfm = 'win';
       } else {
         this.pm.mess_pfm = 'touched once';
@@ -494,9 +494,10 @@
       twn_collide.to({
         alpha: 0,
         angle: 360,
-        y: this.spt.y - 100
+        y: this.spt.y + 300
       }, 1500, Phaser.Easing.Linear.None);
       twn_collide.onComplete.addOnce(function() {
+        this.spt.y = this.pm.y0;
         this.spt.body.velocity.y = -10;
         this.spt.body.velocity.x = 0;
         return this.spt.anchor.setTo(0, 0);
@@ -552,14 +553,20 @@
     }
 
     Effects.prototype.play = function(obj) {
-      var n;
+      var anim, n;
+      if (this.eff != null) {
+        this.eff.destroy();
+      }
       n = this.gm.gameOptions.color_effect ? this.gm.rnd.integerInRange(1, 1) : this.gm.rnd.integerInRange(0, 1);
       this.eff = this.gm.add.sprite(50, 100, this.effects[n], 2);
       if (this.gm.gameOptions.color_effect) {
         this.eff.tint = Math.random() * 0xffffff;
       }
       this.eff.anchor.setTo(0.5, 0.5);
-      this.eff.animations.add('explode', [2, 1, 0, 1], 8, true);
+      anim = this.eff.animations.add('explode', [2, 1, 0, 1, 2, 1, 0, 1, 2], 8, false);
+      anim.onComplete.add(function() {
+        return this.eff.destroy();
+      }, this);
       this.eff.x = obj.x;
       this.eff.y = obj.y;
       return this.eff.animations.play('explode');

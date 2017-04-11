@@ -77,7 +77,7 @@ class Phacker.Game.Sprite
         spt.animations.play 'jmp'
 
         # sprite cannot mark twice or more on the same platform
-        if not pfm.touched_once  then @pm.mess_pfm = 'win'
+        if not pfm.touched_once  and not @pm.has_collided_dgr then @pm.mess_pfm = 'win'
         else  @pm.mess_pfm = 'touched once'
         pfm.touched_once = true
         return true
@@ -130,7 +130,7 @@ class Phacker.Game.Sprite
         else if -75 < bn0.x - @spt.x < 30 then bn0.destroy() #bn0.fly.start()
 
     #----------.----------
-    # tween effect when collide
+    # tween effect when collide with danger
     #----------.----------
 
     twn_spt_collide:()->
@@ -140,11 +140,12 @@ class Phacker.Game.Sprite
         @spt.anchor.setTo( .5,.5)
         twn_collide = @gm.add.tween (@spt)
         twn_collide.to(
-            { alpha : 0 , angle : 360, y: @spt.y - 100}
+            { alpha : 0 , angle : 360, y: @spt.y + 300}
             1500, Phaser.Easing.Linear.None
         )
         twn_collide.onComplete.addOnce(
             ->
+                @spt.y = @pm.y0
                 @spt.body.velocity.y = -10
                 @spt.body.velocity.x =  0
                 @spt.anchor.setTo( 0,0)
