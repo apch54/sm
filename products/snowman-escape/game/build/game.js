@@ -388,6 +388,7 @@
         vx1: this.gm.gameOptions.vx1,
         vx2: this.gm.gameOptions.vx2,
         vxlow: 40,
+        vyTop: this.gm.gameOptions.vyTop,
         dvy: 500,
         g: 300,
         mess_pfm: "nothing yet",
@@ -407,7 +408,7 @@
 
     Sprite.prototype.collide_with_pfm = function() {
       if ((this.pfmO.pm.y0 - this.spt.y) > this.pm.alt_max) {
-        this.spt.body.velocity.y = 10;
+        this.spt.body.velocity.y = this.pm.vyTop;
         this.spt.body.velocity.x = this.pm.vx0;
         this.gm.parameters.btn.had_tapped = false;
         this.spt.y += 3;

@@ -22,6 +22,7 @@ class Phacker.Game.Sprite
             vx1: @gm.gameOptions.vx1         # snow man vx variation for acceleration
             vx2: @gm.gameOptions.vx2
             vxlow: 40       # low vi when bouncing
+            vyTop:@gm.gameOptions.vyTop
             dvy: 500        # variation of vy when clicking on jump button
             g : 300         # y gravity
             mess_pfm: "nothing yet" # collide message
@@ -53,7 +54,7 @@ class Phacker.Game.Sprite
 
         # is sprite over alt max ?
         if (@pfmO.pm.y0 - @spt.y) > @pm.alt_max
-            @spt.body.velocity.y = 10
+            @spt.body.velocity.y = @pm.vyTop
             @spt.body.velocity.x = @pm.vx0
             @gm.parameters.btn.had_tapped = false
             @spt.y += 3

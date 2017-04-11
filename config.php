@@ -19,8 +19,14 @@ $gameOptions = array(
     'vx0' => 150 , // init velocity until score is 40 ( in pixel per second)
     'vx1' => 180 , // first acceleration till score is 150
     'vx2' => 210 , // last x velocity  
-    'color_effect' => false
 
+    // sprite vy at top bounds; vyTop > 0 for below
+    // better  between 50 and 200
+    'vyTop'=> 150,
+
+    // tint effect if true; only for platform collision
+    // not for bonus one
+    'color_effect' => false
 );
 //
 
