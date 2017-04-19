@@ -15,6 +15,8 @@ $gameOptions = array(
     'pointBonus' => 5,
 
     //Here You can add new specific parameters
+    // ----------.----------
+
     // sprite velocity on x axis
     'vx0' => 150 , // init velocity until score is 40 ( in pixel per second)
     'vx1' => 180 , // first acceleration till score is 150
@@ -24,10 +26,17 @@ $gameOptions = array(
     // better  between 50 and 250
     'vyTop'=> 120,
 
-    // tint effect if true; only for platform collision
+    // tint effect if true and 'color_effect'; only for platform collision
     // not for bonus one
-    'color_effect' => false
+    'color_effect' => false,
+
+    // space between 2 dangers over the The same platform
+    // 0 means space is at least danger.width
+    'danger_space' => 0, 
+    // max number of dangers PER platform
+    'max_dangers'  => 3
 );
 //
 
 //REGIEREPLACE
+

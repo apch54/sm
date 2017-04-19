@@ -32,15 +32,17 @@ class Phacker.Game.Danger
     make_danger:(x,y,nd)-> # nd is nb danger
 
          i = 0
-         ddx=@pm.dx[@gm.rnd.integerInRange(0,2)]
+         #ddx=@pm.dx[@gm.rnd.integerInRange(0,2)]
 
          while nd > i++
-            d = @dgr.create x + ddx, y, "danger"
+            #d = @dgr.create x + ddx, y, "danger"
+            d = @dgr.create x , y, "danger"
             d.body.immovable = true
             d.body.setSize(16, 38, 9, 0) # w, h, offset x, offset y
             d.scale.setTo @pm.scaleX, @pm.scaleY
 
-            x += @pm.w
+            x += @pm.w + @gm.gameOptions.danger_space
+            #console.log "- #{@_fle_} : ",x, @gm.gameOptions.danger_space
 
          @gm.world.bringToTop @dgr
 

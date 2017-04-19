@@ -115,15 +115,14 @@
     }
 
     Danger.prototype.make_danger = function(x, y, nd) {
-      var d, ddx, i;
+      var d, i;
       i = 0;
-      ddx = this.pm.dx[this.gm.rnd.integerInRange(0, 2)];
       while (nd > i++) {
-        d = this.dgr.create(x + ddx, y, "danger");
+        d = this.dgr.create(x, y, "danger");
         d.body.immovable = true;
         d.body.setSize(16, 38, 9, 0);
         d.scale.setTo(this.pm.scaleX, this.pm.scaleY);
-        x += this.pm.w;
+        x += this.pm.w + this.gm.gameOptions.danger_space;
       }
       return this.gm.world.bringToTop(this.dgr);
     };
@@ -297,26 +296,14 @@
         bns = false;
       }
       if (this.gm.ge.score < 40) {
-        if (lastP.n_danger > 1) {
-          nn = [this.gm.rnd.integerInRange(0, 1)];
-        } else {
-          nn = [this.gm.rnd.integerInRange(1, 2)];
-        }
+        nn = this.gm.rnd.integerInRange(0, this.gm.gameOptions.max_dangers);
         yy = lastP.y;
       } else if (this.gm.ge.score < 90) {
-        if (lastP.n_danger > 1) {
-          nn = [this.gm.rnd.integerInRange(0, 1)];
-        } else {
-          nn = [this.gm.rnd.integerInRange(1, 2)];
-        }
+        nn = this.gm.rnd.integerInRange(0, this.gm.gameOptions.max_dangers);
         yy = lastP.y;
         this.sptO.pm.vx0 = this.sptO.pm.vx1;
       } else if (this.gm.ge.score < 150) {
-        if (lastP.n_danger > 1) {
-          nn = [this.gm.rnd.integerInRange(0, 1)];
-        } else {
-          nn = [this.gm.rnd.integerInRange(1, 2)];
-        }
+        nn = this.gm.rnd.integerInRange(0, this.gm.gameOptions.max_dangers);
         if (len > 2) {
           lastP1 = this.pfm.getAt(len - 2);
         }
@@ -333,11 +320,7 @@
         }
         this.sptO.pm.vx0 = this.sptO.pm.vx1;
       } else {
-        if (lastP.n_danger > 1) {
-          nn = [this.gm.rnd.integerInRange(0, 1)];
-        } else {
-          nn = [this.gm.rnd.integerInRange(1, 3)];
-        }
+        nn = this.gm.rnd.integerInRange(0, this.gm.gameOptions.max_dangers);
         if (len > 2) {
           lastP1 = this.pfm.getAt(len - 2);
         }
