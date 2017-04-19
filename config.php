@@ -19,12 +19,15 @@ $gameOptions = array(
 
     // sprite velocity on x axis
     'vx0' => 150 , // init velocity until score is 40 ( in pixel per second)
-    'vx1' => 180 , // first acceleration till score is 150
-    'vx2' => 210 , // last x velocity  
+    'dvx' => 1.18,  // increase sprite velocity at score 50, 100 and 150
 
-    // sprite vy at top bounds; vyTop > 0 for below
-    // better  between 50 and 250
-    'vyTop'=> 120,
+    // sprite vy at top  and low bounds; vyTop > 0 for below   
+    'spriteVyTop'=> 100,   // better  between 50 and 250
+    // bounce param when sprite collide platform
+    'spriteVyLow'=> 350,  // better  over 300
+    
+    //sprite hight altmaw boundary
+    'altmax_percent' => .8,
 
     // tint effect if true and 'color_effect'; only for platform collision
     // not for bonus one
@@ -34,7 +37,7 @@ $gameOptions = array(
     // 0 means space is at least danger.width
     'danger_space' => 0, 
     // max number of dangers PER platform
-    'max_dangers'  => 3
+    'max_dangers'  => 1
 );
 //
 

@@ -15,15 +15,16 @@ class Phacker.Game.Sprite
         @pm = @gm.parameters.spt = # parameters
             x0: 50
             y0: @pfmO.pm.y0 - 200
-            alt_max: 200  # max altitude sprite can reach
+            alt_max: 267 * @gm.gameOptions.altmax_percent  # max altitude sprite can reach
             w: 98           # width of the sprite
             h: 105          # height of the sprite
             vx0: @gm.gameOptions.vx0    # initial velocity
-            vx1: @gm.gameOptions.vx1         # snow man vx variation for acceleration
-            vx2: @gm.gameOptions.vx2
+            vx1: @gm.gameOptions.vx0 * @gm.gameOptions.dvx       # snow man vx variation for acceleration
+            vx2: @gm.gameOptions.vx0 * @gm.gameOptions.dvx * @gm.gameOptions.vx0 * @gm.gameOptions.dvx
             vxlow: 40       # low vi when bouncing
-            vyTop:@gm.gameOptions.vyTop
-            dvy: 500        # variation of vy when clicking on jump button
+            vyTop:  @gm.gameOptions.spriteVyTop
+            vyLow:  @gm.gameOptions.spriteVyLow
+            dvy: 600        # variation of vy when clicking on jump button
             g : 300         # y gravity
             mess_pfm: "nothing yet" # collide message
             mess_dgr: "no danger yet"
@@ -34,7 +35,7 @@ class Phacker.Game.Sprite
         @spt = @gm.add.sprite @pm.x0, @pm.y0  , 'character_sprite'  # 95 x 102
         @gm.physics.arcade.enable @spt,Phaser.Physics.ARCADE
         @spt.body.setSize(42, 102, 38, 3) # w, h, offset x, offset y
-        @spt.body.bounce.y = 1.2
+        @spt.body.bounce.y = 1
         @spt.body.gravity.y = @pm.g
         @spt.body.velocity.x = @pm.vx0
         #@spt.body.velocity.y = @pm.dvy
@@ -54,6 +55,7 @@ class Phacker.Game.Sprite
 
         # is sprite over alt max ?
         if (@pfmO.pm.y0 - @spt.y) > @pm.alt_max
+            #console.log "- #{@_fle_} :",@pm.alt_max
             @spt.body.velocity.y = @pm.vyTop
             @spt.body.velocity.x = @pm.vx0
             @gm.parameters.btn.had_tapped = false
@@ -74,6 +76,8 @@ class Phacker.Game.Sprite
         @gm.parameters.btn.topCollidePfm = new Date().getTime()
         @pm.has_bonus = false
         spt.body.velocity.x = @pm.vx0
+        spt.body.velocity.y = @pm.vyLow
+        #console.log "- #{@_fle_} :", spt.body.velocity.y
         spt.animations.play 'jmp'
 
         # sprite cannot mark twice or more on the same platform
@@ -86,7 +90,7 @@ class Phacker.Game.Sprite
     # collide with dangers : @dgr
     #.----------.----------
     collide_with_dgr:->
-
+        #console.log "- #{@_fle_} :", @spt.body.velocity.y
         if @gm.physics.arcade.collide(
             @spt, @dgrO.dgr
             -> return true

@@ -13,6 +13,7 @@ class @YourGame extends Phacker.GameState
     update: ->
         super() #Required
         @_fle_ = 'jeu Update'
+        #console.log @game.ge.level, @game.ge.score
 
         # bounce with platform & chech bonus
         if (resp1 = @spriteO.check_bonus()) is 'bonus'

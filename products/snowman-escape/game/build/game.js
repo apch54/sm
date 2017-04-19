@@ -295,10 +295,10 @@
       } else {
         bns = false;
       }
-      if (this.gm.ge.score < 40) {
+      if (this.gm.ge.score < 50) {
         nn = this.gm.rnd.integerInRange(0, this.gm.gameOptions.max_dangers);
         yy = lastP.y;
-      } else if (this.gm.ge.score < 90) {
+      } else if (this.gm.ge.score < 100) {
         nn = this.gm.rnd.integerInRange(0, this.gm.gameOptions.max_dangers);
         yy = lastP.y;
         this.sptO.pm.vx0 = this.sptO.pm.vx1;
@@ -368,15 +368,16 @@
       this.pm = this.gm.parameters.spt = {
         x0: 50,
         y0: this.pfmO.pm.y0 - 200,
-        alt_max: 200,
+        alt_max: 267 * this.gm.gameOptions.altmax_percent,
         w: 98,
         h: 105,
         vx0: this.gm.gameOptions.vx0,
-        vx1: this.gm.gameOptions.vx1,
-        vx2: this.gm.gameOptions.vx2,
+        vx1: this.gm.gameOptions.vx0 * this.gm.gameOptions.dvx,
+        vx2: this.gm.gameOptions.vx0 * this.gm.gameOptions.dvx * this.gm.gameOptions.vx0 * this.gm.gameOptions.dvx,
         vxlow: 40,
-        vyTop: this.gm.gameOptions.vyTop,
-        dvy: 500,
+        vyTop: this.gm.gameOptions.spriteVyTop,
+        vyLow: this.gm.gameOptions.spriteVyLow,
+        dvy: 600,
         g: 300,
         mess_pfm: "nothing yet",
         mess_dgr: "no danger yet",
@@ -387,7 +388,7 @@
       this.spt = this.gm.add.sprite(this.pm.x0, this.pm.y0, 'character_sprite');
       this.gm.physics.arcade.enable(this.spt, Phaser.Physics.ARCADE);
       this.spt.body.setSize(42, 102, 38, 3);
-      this.spt.body.bounce.y = 1.2;
+      this.spt.body.bounce.y = 1;
       this.spt.body.gravity.y = this.pm.g;
       this.spt.body.velocity.x = this.pm.vx0;
       this.anim_spt = this.spt.animations.add('jmp', [0, 1, 2, 3, 2, 1, 0], 15, false);
@@ -414,6 +415,7 @@
       this.gm.parameters.btn.topCollidePfm = new Date().getTime();
       this.pm.has_bonus = false;
       spt.body.velocity.x = this.pm.vx0;
+      spt.body.velocity.y = this.pm.vyLow;
       spt.animations.play('jmp');
       if (!pfm.touched_once && !this.pm.has_collided_dgr) {
         this.pm.mess_pfm = 'win';

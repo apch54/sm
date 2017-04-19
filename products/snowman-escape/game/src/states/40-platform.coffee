@@ -82,13 +82,13 @@ class Phacker.Game.Platform
         if @gm.rnd.integerInRange(0, 3) < 1 then bns = yes else bns = no
 
         # 1st rule ----------.----------
-        if @gm.ge.score < 40
+        if @gm.ge.score < 50
             #if lastP.n_danger > 1 then nn = @gm.rnd.integerInRange(0, 1)
             nn = @gm.rnd.integerInRange(0, @gm.gameOptions.max_dangers)
             yy = lastP.y # vertical location ##
 
         # 2nd rule ----------.---------.
-        else if @gm.ge.score < 90
+        else if @gm.ge.score < 100
             nn = @gm.rnd.integerInRange(0, @gm.gameOptions.max_dangers)
             yy = lastP.y # vertical location ##
             @sptO.pm.vx0 = @sptO.pm.vx1
