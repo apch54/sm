@@ -26,10 +26,10 @@ class Phacker.Game.Bonus
     #----------.----------
    make_bonus: (x,y) ->
 
-        bn = @gm.add.sprite x + 25, y - @pm.alt[@gm.rnd.integerInRange(0,2)] , 'bonus_sprite'  # 95 x 102
-        #@anim_bn = bn.animations.add 'spk', [0, 1], 5, true
+        bn = @gm.add.sprite x + 25, y - @pm.alt[@gm.rnd.integerInRange(0,2)] , 'bonus_sprite',2  # 95 x 102
+        @anim_bn = bn.animations.add 'spk', [0, 1 ], 5, true
         #bn.frame = 1
-        #bn.animations.play('spk')
+        bn.animations.play('spk')
 
         #console.log "- #{@_fle_} :", bn.animations
         #bn.body.immovable = true

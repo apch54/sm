@@ -18,14 +18,14 @@ class Phacker.Game.Sprite
             alt_max: 267 * @gm.gameOptions.altmax_percent  # max altitude sprite can reach
             w: 98           # width of the sprite
             h: 105          # height of the sprite
-            vx0: @gm.gameOptions.vx0    # initial velocity
-            vx1: @gm.gameOptions.vx0 * @gm.gameOptions.dvx       # snow man vx variation for acceleration
-            vx2: @gm.gameOptions.vx0 * @gm.gameOptions.dvx * @gm.gameOptions.vx0 * @gm.gameOptions.dvx
+            vx0: @gm.gameOptions.spriteVx0    # initial velocity
+            vx1: @gm.gameOptions.spriteVx0 * @gm.gameOptions.ratio_vx0       # snow man vx variation for acceleration
+            vx2: @gm.gameOptions.spriteVx0 * @gm.gameOptions.ratio_vx0 * @gm.gameOptions.ratio_vx0
             vxlow: 40       # low vi when bouncing
             vyTop:  @gm.gameOptions.spriteVyTop
             vyLow:  @gm.gameOptions.spriteVyLow
             dvy: 600        # variation of vy when clicking on jump button
-            g : 300         # y gravity
+            g: 300         # y gravity
             mess_pfm: "nothing yet" # collide message
             mess_dgr: "no danger yet"
             has_collided : false
@@ -38,16 +38,17 @@ class Phacker.Game.Sprite
         @spt.body.bounce.y = 1
         @spt.body.gravity.y = @pm.g
         @spt.body.velocity.x = @pm.vx0
-        #@spt.body.velocity.y = @pm.dvy
 
         @anim_spt = @spt.animations.add 'jmp', [0, 1, 2, 3, 2, 1, 0 ], 15, false
         #@spt.animations.play('jmp')
 
-#        @bns = @gm.add.sprite 500,200 , 'bonus_sprite'
+#        @bns = @gm.add.sprite 500,200 , 'bonus_sprite',2
+#        @bns.frame = 1
+#        walk = @bns.animations.add('walk',[0,1 ],true)
+#        @bns.animations.play 'walk', 30, true
 #        @gm.physics.arcade.enable @bns,Phaser.Physics.ARCADE
 #        @bns.body.velocity.x = @pm.vx0
-#        walk = @bns.animations.add('walk')
-#        @bns.animations.play 'walk', 30, true
+
     #.----------.----------
     # collide sprite with platform
     #.----------.----------

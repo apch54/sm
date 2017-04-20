@@ -92,6 +92,7 @@ class Phacker.Game.Platform
             nn = @gm.rnd.integerInRange(0, @gm.gameOptions.max_dangers)
             yy = lastP.y # vertical location ##
             @sptO.pm.vx0 = @sptO.pm.vx1
+            #console.log @sptO.pm.vx1
 
 
         # 3rd rule ----------.----------.

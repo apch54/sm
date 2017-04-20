@@ -172,7 +172,9 @@
 
     Bonus.prototype.make_bonus = function(x, y) {
       var bn;
-      bn = this.gm.add.sprite(x + 25, y - this.pm.alt[this.gm.rnd.integerInRange(0, 2)], 'bonus_sprite');
+      bn = this.gm.add.sprite(x + 25, y - this.pm.alt[this.gm.rnd.integerInRange(0, 2)], 'bonus_sprite', 2);
+      this.anim_bn = bn.animations.add('spk', [0, 1], 5, true);
+      bn.animations.play('spk');
       this.bns.add(bn);
       return bn.fly = this.make_twn_fly(bn);
     };
@@ -371,9 +373,9 @@
         alt_max: 267 * this.gm.gameOptions.altmax_percent,
         w: 98,
         h: 105,
-        vx0: this.gm.gameOptions.vx0,
-        vx1: this.gm.gameOptions.vx0 * this.gm.gameOptions.dvx,
-        vx2: this.gm.gameOptions.vx0 * this.gm.gameOptions.dvx * this.gm.gameOptions.vx0 * this.gm.gameOptions.dvx,
+        vx0: this.gm.gameOptions.spriteVx0,
+        vx1: this.gm.gameOptions.spriteVx0 * this.gm.gameOptions.ratio_vx0,
+        vx2: this.gm.gameOptions.spriteVx0 * this.gm.gameOptions.ratio_vx0 * this.gm.gameOptions.ratio_vx0,
         vxlow: 40,
         vyTop: this.gm.gameOptions.spriteVyTop,
         vyLow: this.gm.gameOptions.spriteVyLow,

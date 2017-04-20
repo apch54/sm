@@ -18,13 +18,13 @@ $gameOptions = array(
     // ----------.----------
 
     // sprite velocity on x axis
-    'vx0' => 150 , // init velocity until score is 40 ( in pixel per second)
-    'dvx' => 1.18,  // increase sprite velocity at score 50, 100 and 150
+    'spriteVx0' => 150 ,        // init velocity until score is 40 ( in pixel per second)
+    'ratio_vx0' => 1.2,   // increase sprite velocity at score 50, 100 and 150
 
     // sprite vy at top  and low bounds; vyTop > 0 for below   
     'spriteVyTop'=> 100,   // better  between 50 and 250
     // bounce param when sprite collide platform
-    'spriteVyLow'=> 350,  // better  over 300
+    'spriteVyLow'=> 350,   // better  over 300
     
     //sprite hight altmaw boundary
     'altmax_percent' => .8,
